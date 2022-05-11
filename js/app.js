@@ -6,7 +6,7 @@ var config = {
     default: "arcade",
     arcade: {
       gravity: { y: 300 },
-      debug: false,
+      debug: true,
     },
   },
   scene: {
@@ -38,6 +38,14 @@ function preload() {
     frameWidth: 200,
     frameHeight: 200,
   });
+  this.load.spritesheet("boss_attack1", "./assets/sprites/test_samurai/Attack1.png", {
+    frameWidth: 200,
+    frameHeight: 200,
+  });
+  this.load.spritesheet("boss_attack2", "./assets/sprites/test_samurai/Attack2.png", {
+    frameWidth: 200,
+    frameHeight: 200,
+  });
 }
 
 // ajouts des assets de base à la création du jeu + physics
@@ -49,10 +57,13 @@ function create() {
   platform = this.physics.add.staticGroup();
   platform.create(200, 585, "ground");
   platform.create(600, 585, "ground");
+  platform.refresh();
 
   // Le boss
-  boss = this.physics.add.sprite(400, 300, "boss");
+  boss = this.physics.add.sprite(700, 100, "boss");
   boss.setScale(1.5);
+  boss.setSize(50, 100, true);
+  // boss.setOffSet(50, -70);
   boss.setCollideWorldBounds(true);
   this.physics.add.collider(boss, platform);
 
@@ -74,13 +85,25 @@ function create() {
     key:'jump',
     frames: this.anims.generateFrameNumbers('boss_jump', {start: 0, end: 1}),
     frameRate: 10,
-    repeat: -1
+    repeat: 1
   });
 
-  // boss.play("idle");
+  this.anims.create({
+    key:'attack1',
+    frames: this.anims.generateFrameNumbers('boss_attack1', {start: 0, end: 5}),
+    frameRate: 10,
+    repeat: 1
+  });
+  this.anims.create({
+    key:'attack2',
+    frames: this.anims.generateFrameNumbers('boss_attack2', {start: 0, end: 5}),
+    frameRate: 10,
+    repeat: 1
+  });
 
   //  Input Events
   cursors = this.input.keyboard.createCursorKeys();
+  keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
 }
 // tout ce qui est dynamique (score, click events, boss behavior (intelligence artificielle) etc...)
 function update() {
@@ -109,5 +132,10 @@ function update() {
       boss.setVelocityY(-330);
       boss.anims.play('jump', true);
       boss.anims.play('run', false);
+  }
+  // touches pour les attaques
+  if(keyA.isDown){
+    boss.setVelocityX(0);
+    boss.anims.play('attack1', true);
   }
 }
