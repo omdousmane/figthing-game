@@ -31,8 +31,12 @@ function preload() {
     frameHeight: 200,
   });
   this.load.spritesheet("boss_run", "./assets/sprites/test_samurai/Run.png", {
-    frameWidth: 32,
-    frameHeight: 48,
+    frameWidth: 200,
+    frameHeight: 200,
+  });
+  this.load.spritesheet("boss_jump", "./assets/sprites/test_samurai/Jump.png", {
+    frameWidth: 200,
+    frameHeight: 200,
   });
 }
 
@@ -48,6 +52,7 @@ function create() {
 
   // Le boss
   boss = this.physics.add.sprite(400, 300, "boss");
+  boss.setScale(1.5);
   boss.setCollideWorldBounds(true);
   this.physics.add.collider(boss, platform);
 
@@ -61,11 +66,18 @@ function create() {
   this.anims.create({
     key: 'run',
     frames: this.anims.generateFrameNumbers('boss_run', { start: 0, end: 7 }),
+    frameRate: 20,
+    repeat: -1
+  });
+
+  this.anims.create({
+    key:'jump',
+    frames: this.anims.generateFrameNumbers('boss_jump', {start: 0, end: 1}),
     frameRate: 10,
     repeat: -1
   });
 
-  boss.play("idle");
+  // boss.play("idle");
 
   //  Input Events
   cursors = this.input.keyboard.createCursorKeys();
@@ -76,21 +88,26 @@ function update() {
   if (cursors.left.isDown)
   {
       boss.flipX=true;
-      boss.setVelocityX(-160);
-      boss.anims.play('run_left', true);
+      boss.setVelocityX(-190);
+      boss.anims.play('run', true);
   }
   else if (cursors.right.isDown)
   {
-      boss.setVelocityX(160);
-      boss.anims.play('run_right', true);
+      boss.setVelocityX(190);
+      boss.anims.play('run', true);
+      if (boss.flipX){
+        boss.flipX=false;
+      }
   }
   else
   {
       boss.setVelocityX(0);
-      boss.anims.play('idle');
+      boss.anims.play('idle', true);
   }
   if (cursors.up.isDown && boss.body.touching.down)
   {
       boss.setVelocityY(-330);
+      boss.anims.play('jump', true);
+      boss.anims.play('run', false);
   }
 }
