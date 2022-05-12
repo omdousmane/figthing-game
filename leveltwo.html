@@ -7,21 +7,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
   <link rel="stylesheet" href="css/reset.css">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="customBody.css">
+  <link rel="stylesheet" href="css/customBody.css">
   <script defer src="js/app.js"></script>
 
   <title>Fighting Game</title>
 </head>
 
-<body>
-   <main>
-        <div id="logo">
+<body id="body">
+   <main id="main">
+        <div id="logo" class="slide-top">
             <img src="assets/logo.png" alt="" width="250px">
         </div>
+        <style>
+        #msg{
+          font-size:44px ;
+          color :red;
+          left:50%;
+          font-familly:sans-serif;
+          position: absolute;
+          display : none
+        }
+        </style>
+        <div id="msg">OK</div>
     </main>
 
-    <script src="js/app.js"></script>
+    <script src="js/app2.js"></script>
 </body>
 
 </html>
