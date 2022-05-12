@@ -55,10 +55,15 @@ form.addEventListener("submit", function (e) {
       }
     }
   };
-  xhr.open("POST", "../back/controllers.php", true);
+  xhr.open("POST", "/back/controllers.php", true);
   xhr.setRequestHeader("X-Requested-With", "xmlhttprequest");
   xhr.send(data);
 });
+
+// fonction de verification de clé
+function isKeyExists(obj, key) {
+  return key in obj;
+}
 
 // verification de la saisie du pseudo progressivement
 let pseudo = document.querySelector(".pseudo");
@@ -75,13 +80,22 @@ pseudo.addEventListener("keyup", (e) => {
             console.log(submit);
             submit.setAttribute("disabled", "true");
           }
-          console.log(results);
-          html = `
-              <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <strong>Error...!!!</strong> ${results.status}.
+          if (isKeyExists(results, "error")) {
+            html = `
+              <div class="alert-warning role="alert">
+              ${results.error}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>
             `;
+          } else {
+            html = `
+              <div class="alert-succes role="alert">
+              ${results.success}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            `;
+          }
+
           let alert = document.querySelector(".content-alerte");
           alert.innerHTML = html;
         } else {
@@ -89,7 +103,7 @@ pseudo.addEventListener("keyup", (e) => {
         }
       }
     };
-    xhr.open("GET", "../back/controllers.php?pseudo=" + pseudo.value, true);
+    xhr.open("GET", "/back/controllers.php?pseudo=" + pseudo.value, true);
     xhr.send();
   }
 });

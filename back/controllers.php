@@ -115,14 +115,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
   if (array_key_exists('pseudo', $_GET)) {
     $pseudo = $_GET['pseudo'];
     $login = checkPseudo($pseudo);
-    if ($login) {
+    if (!$login) {
       echo json_encode([
-        'status' => "choisir un autre celui la est indesponible",
-        'error' => "error"
+        'success' => "pseudo disponible ✌"
       ]);
     } else {
       echo json_encode([
-        'status' => "pseudo disponible"
+        'error' => "pseudo indisponible 😒",
       ]);
     }
   }
