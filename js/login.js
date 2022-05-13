@@ -22,46 +22,25 @@ var getHttpRequest = function () {
     alert("Abandon :( Impossible de créer une instance XMLHTTP");
     return false;
   }
-
   return httpRequest;
 };
 
+// verification de la saisie du pseudo progressivement
+let alert = document.querySelector(".content-alerte");
+var pseudo = document.querySelector(".pseudoLogin");
+var submit = document.querySelector(".submit-btn");
+submit.style.display = "none";
 const form = document.querySelector(".form-container");
 
+// fonction de verification de clé
+function isKeyExists(obj, key) {
+  return key in obj;
+}
 form.addEventListener("submit", function (e) {
   e.preventDefault();
-  let pseudo = document.querySelector(".pseudo").value;
-  // let mail = document.querySelector(".mail").value;
-  // let data = {
-  //   pseudo: pseudo,
-  //   mail: mail,
-  // };
-  let data = new FormData(form);
-  // console.log(data.get("pseudo"));
-  // console.table(data);
-
-  let xhr = getHttpRequest();
-
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4) {
-      if (xhr.status != 200) {
-        let errors = xhr.responseText;
-        console.log(errors);
-      } else {
-        let results = JSON.parse(xhr.responseText);
-        console.log(results);
-        let alert = document.querySelector(".alert");
-        alert.innerHTML = results.status;
-      }
-    }
-  };
-  xhr.open("POST", "../back/controllers.php", true);
-  xhr.setRequestHeader("X-Requested-With", "xmlhttprequest");
-  xhr.send(data);
+  document.location.href = "univers.html";
 });
 
-// verification de la saisie du pseudo progressivement
-let pseudo = document.querySelector(".pseudo");
 pseudo.addEventListener("keyup", (e) => {
   console.log(e.target.value.length);
   if (e.target.value.length >= 3) {
@@ -70,26 +49,32 @@ pseudo.addEventListener("keyup", (e) => {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
           let results = JSON.parse(xhr.responseText);
-          if (results.error) {
-            let submit = document.querySelector(".submit-btn");
-            console.log(submit);
-            submit.setAttribute("disabled", "true");
-          }
-          console.log(results);
-          html = `
-              <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <strong>Error...!!!</strong> ${results.status}.
+          if (results.login) {
+            submit.style.display = "flex";
+            html = `
+              <div class="alert-succes role="alert">
+              ${results.login}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>
             `;
-          let alert = document.querySelector(".content-alerte");
+
+            // Enregistrer des données dans sessionStorage
+            sessionStorage.setItem("idUser", results.idUser);
+          } else {
+            submit.style.display = "none";
+            html = `
+              <div class="alert-warning role="alert">
+              ${results.error}
+              </div>
+            `;
+          }
           alert.innerHTML = html;
         } else {
           alert("impossible datteindre le server");
         }
       }
     };
-    xhr.open("GET", "../back/controllers.php?pseudo=" + pseudo.value, true);
+    xhr.open("GET", "/back/controllers.php?pseudoLogin=" + pseudo.value, true);
     xhr.send();
   }
 });

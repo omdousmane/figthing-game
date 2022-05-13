@@ -1,0 +1,99 @@
+.container {
+  padding: 20px 20px;
+  text-transform: uppercase;
+  width: 100%;
+  height: 100vh;
+  background: radial-gradient(
+      132.84% 133.1% at 50% 50%,
+      #000000 0%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    url(../assets/backgroundhome.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-clip: padding-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+}
+
+.logo {
+  width: 216px;
+  height: 93px;
+}
+.logo img {
+  max-width: 100%;
+}
+header {
+  height: 125px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+main {
+  display: flex;
+  padding: 25px;
+  width: 80%;
+  height: calc(100vh - 30px);
+  justify-content: space-between;
+  align-items: center;
+  flex-flow: row wrap;
+  gap: 25px;
+  background: var(--card-primary-bg);
+  border-radius: var(--radius);
+}
+.map1 {
+  background-image: url(../assets/1.webp);
+}
+.map2 {
+  background-image: url(../assets/2.webp);
+}
+.map3 {
+  background-image: url(../assets/3.webp);
+}
+.map4 {
+  background-image: url(../assets/4.webp);
+}
+.map5 {
+  background-image: url(../assets/5.webp);
+}
+.map6 {
+  background-image: url(../assets/6.webp);
+}
+
+.map {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-clip: padding-box;
+  object-fit: cover;
+  width: 30%;
+  height: 40%;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.lock {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.lock img {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  filter: grayscale(0%);
+}
+
+.filter {
+  border: none;
+  border-radius: var(--radius);
+  filter: grayscale(90%);
+}
+.menu {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 10px;
+}

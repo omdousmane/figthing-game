@@ -44,7 +44,7 @@ function checkUser($pseudo, $mail): array | false
 function checkPseudo($pseudo)
 {
   global $pdo;
-  $statementcheckPseudo = $pdo->prepare('SELECT  `pseudo` FROM `user` WHERE `pseudo`LIKE :pseudo AND `pseudo` =:pseudo');
+  $statementcheckPseudo = $pdo->prepare('SELECT  `pseudo`, `id` FROM `user` WHERE `pseudo`LIKE :pseudo AND `pseudo` =:pseudo');
   $statementcheckPseudo->bindValue(':pseudo', "%" . $pseudo . "%");
   $statementcheckPseudo->bindValue(':pseudo', $pseudo);
   $statementcheckPseudo->execute();
@@ -54,14 +54,16 @@ function checkPseudo($pseudo)
 
 
 // fonction de recuperation du niveau
-function getLevelUSer(): array | false
+function getLevelUSer($idUser): array | false
 {
   global $pdo;
-  $stmtGetLevel = $pdo->prepare('SELECT * FROM `level` INNER JOIN user ON user.id = level.idUser');
+  $stmtGetLevel = $pdo->prepare('SELECT * FROM level LEFT JOIN maps ON level.IdMap = maps.id LEFT JOIN progress ON progress.id_map = maps.id LEFT JOIN user ON progress.id_user = user.id WHERE user.id =:idUser');
+  $stmtGetLevel->bindValue(':idUser', $idUser);
   $stmtGetLevel->execute();
-  $level = $stmtGetLevel->fetch();
+  $level = $stmtGetLevel->fetchAll();
   return $level ?? false;
 }
+
 
 
 
@@ -70,13 +72,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if ($countTab != 1) {
     // 1. Analyser les paramètres passés en POST 
     if (array_key_exists('pseudo', $_POST) && array_key_exists('mail', $_POST)) {
-      $pseudo = $_POST['pseudo'];
-      $mail = $_POST['mail'];
+      $input = filter_input_array(INPUT_POST, [
+        'pseudo' => FILTER_SANITIZE_SPECIAL_CHARS,
+        'mail' => FILTER_SANITIZE_EMAIL,
+      ]);
+      $pseudo = $input['pseudo'] ?? "";
+      $mail = $input['mail'] ?? "";
+
+      if (!$mail) {
+        echo json_encode([
+          'status' => 'Le mail est requis'
+        ]);
+      } elseif (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+        echo json_encode([
+          'status' => 'Mauvais format'
+        ]);
+      }
 
       $checkRegister = checkUser($pseudo, $mail);
       if ($checkRegister) {
         echo json_encode([
-          'status' => 'le pseudo ou le mail exist deja'
+          'status' => 'le mail exist deja'
         ]);
       } else {
         $register = register($pseudo, $mail);
@@ -85,15 +101,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'status' => 'problème d\'enregistrement'
           ]);
         } else {
-          echo json_encode([
-            'status' => "succes enregistrement"
-          ]);
+          echo json_encode($register);
         }
       }
     }
   } else {
-
-
     if (array_key_exists('pseudo', $_POST)) {
       $pseudo = $_POST['pseudo'];
       $login = login($pseudo);
@@ -112,17 +124,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
+
   if (array_key_exists('pseudo', $_GET)) {
-    $pseudo = $_GET['pseudo'];
-    $login = checkPseudo($pseudo);
-    if ($login) {
+    $input = filter_input_array(INPUT_GET, [
+      'pseudo' => FILTER_SANITIZE_SPECIAL_CHARS,
+    ]);
+    $pseudo = $input['pseudo'] ?? "";
+    $register = checkPseudo($pseudo);
+    if ($register == false) {
       echo json_encode([
-        'status' => "choisir un autre celui la est indesponible",
-        'error' => "error"
+        'success' => "pseudo disponible ✌",
+        'login' => "Bon login ✔ ✌",
+
       ]);
     } else {
       echo json_encode([
-        'status' => "pseudo disponible"
+        'error' => "pseudo indisponible 😒",
+      ]);
+    }
+  }
+
+  if (array_key_exists('pseudoLogin', $_GET)) {
+    $input = filter_input_array(INPUT_GET, [
+      'pseudoLogin' => FILTER_SANITIZE_SPECIAL_CHARS,
+    ]);
+    $pseudoLogin = $_GET['pseudoLogin'];
+    $login = checkPseudo($pseudoLogin);
+    if ($login) {
+      echo json_encode([
+        'login' => "Bon login ✔ ✌",
+        'idUser' => $login['id']
+      ]);
+    } else {
+      echo json_encode([
+        'error' => "pseudo indisponible 😒",
+      ]);
+    }
+  }
+
+  // recuperation des données stat du gamer
+  if (array_key_exists('idUser', $_GET)) {
+    $input = filter_input_array(INPUT_GET, [
+      'idUser' => FILTER_SANITIZE_NUMBER_INT,
+    ]);
+    $idUser = $input['idUser'] ?? "";
+    $level = getLevelUSer($idUser);
+    if ($level) {
+      echo json_encode($level);
+    } else {
+      echo json_encode([
+        'error' => "Aucune information disponible 😒",
       ]);
     }
   }
