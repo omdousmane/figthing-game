@@ -64,7 +64,43 @@ function getLevelUSer($idUser): array | false
   return $level ?? false;
 }
 
+// fonction de recuperation des données en base 
+function getGameState($idUser): array | false
+{
+  global $pdo;
+  $stmtGetGameState = $pdo->prepare('SELECT * FROM level LEFT JOIN maps ON level.IdMap = maps.id LEFT JOIN progress ON progress.id_map = maps.id LEFT JOIN user ON progress.id_user = user.id WHERE user.id =:idUser');
+  $stmtGetGameState->bindValue(':idUser', $idUser);
+  $stmtGetGameState->execute();
+  $level = $stmtGetGameState->fetchAll();
+  return $level ?? false;
+}
 
+// fonction d'insertion de données
+function registerGameState($stat)
+{
+  global $pdo;
+  $stmtRegisterGameState = $pdo->prepare('INSERT INTO `part`(`id`, `idUser`, `idMap`, `score`, `result`, `speed`, `degats`, `bossLive`, `gameEnd`)VALUES(
+            DEFAULT,
+            :idUser,
+            :idMap,
+            :score,
+            :result,
+            :speed,
+            :degats,
+            :bossLive,
+            :gameEnd)');
+  $stmtRegisterGameState->bindValue(':idUser', $stat['idUser']);
+  $stmtRegisterGameState->bindValue(':idMap', $stat['idMap']);
+  $stmtRegisterGameState->bindValue(':score', $stat['score']);
+  $stmtRegisterGameState->bindValue(':result', $stat['result']);
+  $stmtRegisterGameState->bindValue(':speed', $stat['speed']);
+  $stmtRegisterGameState->bindValue(':degats', $stat['degats']);
+  $stmtRegisterGameState->bindValue(':bossLive', $stat['bossLive']);
+  $stmtRegisterGameState->bindValue(':gameEnd', $stat['gameEnd']);
+  $stmtRegisterGameState->execute();
+  $id = $pdo->lastInsertId();
+  return $id ?? false;
+}
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -105,7 +141,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
       }
     }
+
+    if (array_key_exists('idUser', $_POST) && array_key_exists('result', $_POST)) {
+
+      // creation du tableau de donnée 
+      $stat = [
+        'idUser' => $stat['idUser'],
+        'idMap' => $stat['idMap'],
+        'score' => $stat['score'],
+        'result' => $stat['result'],
+        'speed' => $stat['speed'],
+        'degats' => $stat['degats'],
+        'bossLive' => $stat['bossLive'],
+        'gameEnd' => $stat['gameEnd']
+      ];
+
+      $StatRegister = registerGameState($stat);
+      if ($StatRegister === 0) {
+        echo json_encode([
+          'status' => 'problème d\'enregistrement'
+        ]);
+      } else {
+        echo json_encode($StatRegister);
+      }
+    }
   } else {
+    // envois du pseudo en base 
     if (array_key_exists('pseudo', $_POST)) {
       $pseudo = $_POST['pseudo'];
       $login = login($pseudo);
@@ -123,8 +184,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-
-
+  // recuperation des donnée a partier du pseudo
   if (array_key_exists('pseudo', $_GET)) {
     $input = filter_input_array(INPUT_GET, [
       'pseudo' => FILTER_SANITIZE_SPECIAL_CHARS,
@@ -144,6 +204,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
   }
 
+  // recuperation des donnée a partier du pseudoLogin
   if (array_key_exists('pseudoLogin', $_GET)) {
     $input = filter_input_array(INPUT_GET, [
       'pseudoLogin' => FILTER_SANITIZE_SPECIAL_CHARS,
@@ -171,6 +232,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $level = getLevelUSer($idUser);
     if ($level) {
       echo json_encode($level);
+    } else {
+      echo json_encode([
+        'error' => "Aucune information disponible 😒",
+      ]);
+    }
+  }
+
+  //Recuperation des states
+  if (array_key_exists('idUser', $_GET)) {
+    $input = filter_input_array(INPUT_GET, [
+      'idUser' => FILTER_SANITIZE_NUMBER_INT,
+    ]);
+    $idUser = $input['idUser'] ?? "";
+    $stat = getGameState($idUser);
+    if ($stat) {
+      echo json_encode($stat);
     } else {
       echo json_encode([
         'error' => "Aucune information disponible 😒",

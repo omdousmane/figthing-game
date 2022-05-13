@@ -2,22 +2,29 @@ let btns = document.querySelectorAll(".map");
 // console.log(btns);
 
 const mapContents = ["map1", "map2", "map3", "map4", "map5", "map6"];
-
+var mapLink = [];
+// fonction de verification de clé
+function isKeyExists(obj, key) {
+  return key in obj;
+}
 function getUniver(id) {
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {
       if (xhr.status === 200) {
         let results = JSON.parse(xhr.responseText);
-        // console.log(results);
+        console.log(results);
 
         if (!results.error) {
-          console.log(results);
+          // console.log(results);
+          var content;
           results
             .map(function (content) {
+              // console.log(content);
+              mapLink.push(content.map_link);
               for (let index = 0; index < mapContents.length; index++) {
-                const mapContent = mapContents[index];
-                if (content.maps == mapContent) {
+                var mapContent = mapContents[index];
+                if (content.maps === mapContent) {
                   console.log(mapContent);
                   let maps = document.querySelector("." + mapContent);
                   if (maps.classList.remove("filter")) {
@@ -27,6 +34,26 @@ function getUniver(id) {
               }
             })
             .join("");
+
+          for (let index = 0; index < btns.length; index++) {
+            const btn = btns[index];
+            btn.addEventListener("click", function (e) {
+              console.log(e.target.childNodes[1].href);
+              const url = new URL(e.target.childNodes[1].href);
+              console.log(url.pathname);
+
+              for (let i = 0; i < mapLink.length; i++) {
+                const element = mapLink[i];
+                if ("/" + element == url.pathname) {
+                  let link = e.target.childNodes[1].href;
+                  document.location.href = e.target.childNodes[1].href = link;
+                  console.log(
+                    (e.target.childNodes[1].href = url.origin + "/" + element)
+                  );
+                }
+              }
+            });
+          }
         }
       }
     }
@@ -38,7 +65,7 @@ function getUniver(id) {
 for (let index = 0; index < btns.length; index++) {
   const btn = btns[index];
   btn.addEventListener("click", function () {
-    console.log(btn);
+    // console.log(btn);
     // console.log("diallo");
   });
 }
@@ -50,7 +77,7 @@ var idUser = sessionStorage.getItem("idUser");
 if (idUser) {
   getUniver(idUser);
 } else {
-  alert("pas d'id");
+  // alert("pas d'id");
 }
 
 //  avenement de Déconexion
