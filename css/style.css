@@ -1,3 +1,38 @@
+<<<<<<< HEAD
+@font-face {
+  font-family: "Popins";
+  src: url(../font/Poppins-Regular.ttf);
+}
+
+:root {
+  --primary: #8a32e6;
+  --secondary: #8a32e6;
+  --yellow: #ffd90f;
+  --white: #f9f9f9;
+
+  /* btn color */
+  --default-btn: linear-gradient(180deg, #d2b6f0 0%, #695f73 100%);
+  --radius: 12px;
+  --btn-border: 1px solid #a8a8a8;
+  --btn-shadow: inset 0px -14px 4px rgba(0, 0, 0, 0.25);
+  --btn-p: 0px 89px;
+  /* police  font*/
+  font-family: "popins";
+
+  /* card */
+  --card-primary-bg: rgba(255, 255, 255, 0.6);
+  --card-secondary-bg: rgba(0, 0, 0, 0.76);
+  --card-radius: 15px;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+=======
+>>>>>>> e2ef19f15fd6f250c6b3594a70a39783f592ab00
 body {
   display: flex;
   flex-direction: column;
@@ -117,5 +152,204 @@ body {
   margin-bottom: 10px;
 }
 .submit-btn {
+<<<<<<< HEAD
+  margin: 0 auto;
+  text-align: center;
+  color: white;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  background: blue;
+  font-weight: bold;
+  width: 200px;
+}
+
+/*Oumaïma game over*/
+.progression-bg {
+  background-image: url('../images/safeimagekit-pixel-art\(4\)\(1\)\(1\).png');
+  background-size: 90%;
+  background-position-x: center;
+}
+.progression-wrapper {
+  display: flex !important;
+  justify-content: center;
+  line-height: 40px;
+}
+.progression-container{
+  margin-top : 5.625rem  !important;
+}
+.result-title {
+  font-family: 'Press Start 2P', cursive; 
+  color: #8A32E6;
+  text-shadow:  3px 2px #ffd90f;
+  letter-spacing: 6px ;
+}
+#try-again, #back-to-menu {
+  width: 80%;
+  height: 60px;
+  margin-block: 15px;
+  background: linear-gradient(rgba(210,182,240, 100%), rgba(105,95,115, 100%));
+  border: none;
+  border-radius: 10px;
+  color: white;
+  box-shadow: 0px 8px 3px 0px rgba(0, 0, 0, 0.25);
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  font-size : 20px;
+  letter-spacing: 3px ;
+}
+#try-again:hover , #back-to-menu:hover{
+  box-shadow: 0px 12px 4px rgba(0, 0, 0, 0.4);
+}
+.endgame-options {
+  margin-block: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
+  justify-content: center;
+}
+.score {
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 3px;
+  display: flex;
+  justify-content: space-evenly;
+}
+.chosen-character {
+  width: 200px;
+  height: 130px;
+  display: flex;
+  margin: auto;
+  margin-top: 25px;
+}
+
+
+/* score page oumaima*/
+.score-wrapper {
+  background-image: url('../images/safeimagekit-pixel-art_1_.png');
+  overflow-y: hidden;
+  text-transform: uppercase;
+  width: 100%;
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-clip: padding-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.score-title {
+  font-family: 'Press Start 2P', cursive; 
+  color: white;
+  text-shadow:  1px 1px black;
+  letter-spacing: 6px ;
+  margin-bottom: 7%;
+}
+.score--content, .score--container{
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  margin-block : 15px;
+}
+.container {
+  overflow-y: hidden;
+  text-transform: uppercase;
+  width: 60%;
+  height: 90vh;
+  background: radial-gradient(
+      132.84% 133.1% at 50% 50%,
+      #000000 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
+}
+.score-details {
+  color: white;
+  font-weight: 600;
+  font-size: 22px;
+  margin-block: 25px;
+  font-family: 'Press Start 2P', cursive;
+  row-gap : 15px
+}
+
+/* help Oumaima*/
+
+.help-title {
+  font-family: 'Press Start 2P', cursive; 
+  color: white;
+  text-shadow:  1px 1px black;
+  letter-spacing: 6px ;
+  margin-bottom: 7%;
+}
+.help--content{
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  margin-block : 15px;
+}
+
+.help-details {
+  color: white;
+  font-weight: 600;
+  font-size: 22px;
+  margin-block: 25px;
+  font-family: 'Press Start 2P', cursive;
+  row-gap : 15px;
+  align-items: center;
+  display: flex;
+  gap : 10px;
+
+}
+.keys {
+  display: flex;
+  align-items: flex-end;
+}
+.keys span {
+  margin-bottom : 15px;
+}
+.help-wrapper {
+  background-image: url('../images/safeimagekit-pixel-art_1_.png');
+  overflow-y: hidden;
+  text-transform: uppercase;
+  width: 100%;
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-clip: padding-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.attacks-keys {
+  margin-left: 0px
+}
+.attack img {
+  height : 60px;
+}
+.keys img {
+  height : 90px;
+}
+
+.help-details span {
+  font-size: small;
+}
+
+.help-container, .container {
+  position: relative;
+}
+.close-tab {
+  position: absolute;
+  width: fit-content;
+  height: fit-content;
+  top: 0px;
+  right: 0px;
+}
+.close-tab img {
+  width: 50px
+=======
   display: none;
+>>>>>>> e2ef19f15fd6f250c6b3594a70a39783f592ab00
+}
+.close-tab:hover {
+  cursor:pointer;
 }
