@@ -142,29 +142,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       }
     }
 
-    if (array_key_exists('idUser', $_POST) && array_key_exists('result', $_POST)) {
+    // if (array_key_exists('idUser', $_POST) && array_key_exists('result', $_POST)) {
+    //   // creation du tableau de donnée 
+    //   $stat = [
+    //     'idUser' => $stat['idUser'],
+    //     'idMap' => $stat['idMap'],
+    //     'score' => $stat['score'],
+    //     'result' => $stat['result'],
+    //     'speed' => $stat['speed'],
+    //     'degats' => $stat['degats'],
+    //     'bossLive' => $stat['bossLive'],
+    //     'gameEnd' => $stat['gameEnd']
+    //   ];
 
-      // creation du tableau de donnée 
-      $stat = [
-        'idUser' => $stat['idUser'],
-        'idMap' => $stat['idMap'],
-        'score' => $stat['score'],
-        'result' => $stat['result'],
-        'speed' => $stat['speed'],
-        'degats' => $stat['degats'],
-        'bossLive' => $stat['bossLive'],
-        'gameEnd' => $stat['gameEnd']
-      ];
-
-      $StatRegister = registerGameState($stat);
-      if ($StatRegister === 0) {
-        echo json_encode([
-          'status' => 'problème d\'enregistrement'
-        ]);
-      } else {
-        echo json_encode($StatRegister);
-      }
-    }
+    //   $StatRegister = registerGameState($stat);
+    //   if ($StatRegister === 0) {
+    //     echo json_encode([
+    //       'status' => 'problème d\'enregistrement'
+    //     ]);
+    //   } else {
+    //     echo json_encode($StatRegister);
+    //   }
+    // }
   } else {
     // envois du pseudo en base 
     if (array_key_exists('pseudo', $_POST)) {
@@ -240,18 +239,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
   }
 
   //Recuperation des states
-  if (array_key_exists('idUser', $_GET)) {
-    $input = filter_input_array(INPUT_GET, [
-      'idUser' => FILTER_SANITIZE_NUMBER_INT,
-    ]);
-    $idUser = $input['idUser'] ?? "";
-    $stat = getGameState($idUser);
-    if ($stat) {
-      echo json_encode($stat);
-    } else {
-      echo json_encode([
-        'error' => "Aucune information disponible 😒",
-      ]);
-    }
-  }
+  // if (array_key_exists('idUser', $_GET)) {
+  //   $input = filter_input_array(INPUT_GET, [
+  //     'idUser' => FILTER_SANITIZE_NUMBER_INT,
+  //   ]);
+  //   $idUser = $input['idUser'] ?? "";
+  //   $stat = getGameState($idUser);
+  //   if ($stat) {
+  //     echo json_encode($stat);
+  //   } else {
+  //     echo json_encode([
+  //       'error' => "Aucune information disponible 😒",
+  //     ]);
+  //   }
+  // }
 }
