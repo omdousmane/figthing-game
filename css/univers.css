@@ -26,7 +26,7 @@
   max-width: 100%;
 }
 header {
-  height: 30px;
+  height: 125px;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -45,22 +45,22 @@ main {
   border-radius: var(--radius);
 }
 .map1 {
-  background-image: url(../assets/1.png);
+  background-image: url(../assets/1.webp);
 }
 .map2 {
-  background-image: url(../assets/2.png);
+  background-image: url(../assets/2.webp);
 }
 .map3 {
-  background-image: url(../assets/3.png);
+  background-image: url(../assets/3.webp);
 }
 .map4 {
-  background-image: url(../assets/4.png);
+  background-image: url(../assets/4.webp);
 }
 .map5 {
-  background-image: url(../assets/5.png);
+  background-image: url(../assets/5.webp);
 }
 .map6 {
-  background-image: url(../assets/6.png);
+  background-image: url(../assets/6.webp);
 }
 
 .map {
@@ -70,6 +70,9 @@ main {
   object-fit: cover;
   width: 30%;
   height: 40%;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
 }
 
 .lock {
@@ -81,5 +84,16 @@ main {
   position: absolute;
   right: 0;
   bottom: 0;
-  /* background: red; */
+  filter: grayscale(0%);
+}
+
+.filter {
+  border: none;
+  border-radius: var(--radius);
+  filter: grayscale(90%);
+}
+.menu {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 10px;
 }

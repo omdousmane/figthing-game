@@ -25,7 +25,7 @@ let perso;
 
 // chargement des assets
 function preload() {
-  this.load.image("map", "./assets/background.png");
+  this.load.image("map", "../assets/1.png");
   this.load.image("ground", "./assets/platform.png");
   this.load.spritesheet("boss", "./assets/sprites/test_samurai/Idle.png", {
     frameWidth: 200,
@@ -35,22 +35,34 @@ function preload() {
     frameWidth: 200,
     frameHeight: 48,
   });
-  this.load.spritesheet("boss_run_left", "./assets/sprites/test_samurai/RunLeft.png", {
-    frameWidth: 200,
-    frameHeight: 48,
-  });
+  this.load.spritesheet(
+    "boss_run_left",
+    "./assets/sprites/test_samurai/RunLeft.png",
+    {
+      frameWidth: 200,
+      frameHeight: 48,
+    }
+  );
   this.load.spritesheet("boss_jump", "./assets/sprites/test_samurai/Jump.png", {
     frameWidth: 200,
     frameHeight: 200,
   });
-  this.load.spritesheet("boss_attack1", "./assets/sprites/test_samurai/Attack1.png", {
-    frameWidth: 200,
-    frameHeight: 69,
-  });
-  this.load.spritesheet("boss_attack2", "./assets/sprites/test_samurai/Attack2.png", {
-    frameWidth: 200,
-    frameHeight: 63,
-  });
+  this.load.spritesheet(
+    "boss_attack1",
+    "./assets/sprites/test_samurai/Attack1.png",
+    {
+      frameWidth: 200,
+      frameHeight: 69,
+    }
+  );
+  this.load.spritesheet(
+    "boss_attack2",
+    "./assets/sprites/test_samurai/Attack2.png",
+    {
+      frameWidth: 200,
+      frameHeight: 63,
+    }
+  );
 }
 
 // ajouts des assets de base à la création du jeu + physics
@@ -64,61 +76,65 @@ function create() {
   platform.create(600, 585, "ground");
   platform.refresh();
 
-
   // testLifepoints = this.physics.add.sprite(300, 100, "boss");
   // testLifepoints.setCollideWorldBounds(true);
-
 
   // Le boss
   boss = this.physics.add.sprite(700, 100, "boss");
   boss.setScale(4);
   boss.body.setSize(40, 52, false);
   boss.setCollideWorldBounds(true);
-  this.physics.add.collider(boss, platform,helloword);
+  this.physics.add.collider(boss, platform, helloword);
   //this.physics.add.overlap(boss, platform, helloword)
 
-
-
-
   this.anims.create({
-    key: 'idle',
-    frames: this.anims.generateFrameNumbers('boss', { start: 0, end: 7 }),
+    key: "idle",
+    frames: this.anims.generateFrameNumbers("boss", { start: 0, end: 7 }),
     frameRate: 10,
-    repeat: -1
+    repeat: -1,
   });
 
   this.anims.create({
-    key: 'run',
-    frames: this.anims.generateFrameNumbers('boss_run', { start: 0, end: 7 }),
+    key: "run",
+    frames: this.anims.generateFrameNumbers("boss_run", { start: 0, end: 7 }),
     frameRate: 30,
-    repeat: -1
+    repeat: -1,
   });
 
   this.anims.create({
-    key: 'run_left',
-    frames: this.anims.generateFrameNumbers('boss_run_left', { start: 0, end: 7 }),
+    key: "run_left",
+    frames: this.anims.generateFrameNumbers("boss_run_left", {
+      start: 0,
+      end: 7,
+    }),
     frameRate: 30,
-    repeat: -1
+    repeat: -1,
   });
 
   this.anims.create({
-    key:'jump',
-    frames: this.anims.generateFrameNumbers('boss_jump', {start: 0, end: 1}),
+    key: "jump",
+    frames: this.anims.generateFrameNumbers("boss_jump", { start: 0, end: 1 }),
     frameRate: 10,
-    repeat: 1
+    repeat: 1,
   });
 
   this.anims.create({
-    key:'attack1',
-    frames: this.anims.generateFrameNumbers('boss_attack1', {start: 0, end: 5}),
+    key: "attack1",
+    frames: this.anims.generateFrameNumbers("boss_attack1", {
+      start: 0,
+      end: 5,
+    }),
     frameRate: 30,
-    repeat: 1
+    repeat: 1,
   });
   this.anims.create({
-    key:'attack2',
-    frames: this.anims.generateFrameNumbers('boss_attack2', {start: 0, end: 5}),
+    key: "attack2",
+    frames: this.anims.generateFrameNumbers("boss_attack2", {
+      start: 0,
+      end: 5,
+    }),
     frameRate: 30,
-    repeat: 1
+    repeat: 1,
   });
 
   //  Input Events
@@ -132,45 +148,42 @@ function create() {
   //   AttaqueN1: 50,
   //   AttaqueN2: 75,
   // }
-
 }
 // tout ce qui est dynamique (score, click events, boss behavior (intelligence artificielle) etc...)
 function update() {
   //click events pour bouger le perso
   if (cursors.left.isDown) {
-      boss.setVelocityX(-400);
-      boss.anims.play('run_left', true);
+    boss.setVelocityX(-400);
+    boss.anims.play("run_left", true);
   } else if (cursors.right.isDown) {
-      boss.setVelocityX(400);
-      boss.anims.play('run', true);
+    boss.setVelocityX(400);
+    boss.anims.play("run", true);
   } else {
-      boss.setVelocityX(0);
-      boss.anims.play('idle', true);
+    boss.setVelocityX(0);
+    boss.anims.play("idle", true);
   }
   if (cursors.up.isDown && boss.body.touching.down) {
-      boss.setVelocityY(-530);
-      boss.anims.play('run', false);
-      boss.anims.play('jump', true);
-      
+    boss.setVelocityY(-530);
+    boss.anims.play("run", false);
+    boss.anims.play("jump", true);
   }
   // touches pour les attaques
-  if(keyA.isDown) {
+  if (keyA.isDown) {
     boss.body.setSize(40, 69, false);
     boss.setVelocityX(0);
-    boss.anims.play('attack1', true);
-  } else if(keyZ.isDown) {
+    boss.anims.play("attack1", true);
+  } else if (keyZ.isDown) {
     boss.body.setSize(40, 63, false);
     boss.setVelocityX(0);
-    boss.anims.play('attack2', true);
+    boss.anims.play("attack2", true);
   } else {
     boss.body.setSize(40, 52, false);
   }
 }
 
-var v=0
-function helloword(){
- 
-  document.querySelector("#msg").innerText="contact"+v
-  document.querySelector("#msg").style.display="block"
-  v++
+var v = 0;
+function helloword() {
+  document.querySelector("#msg").innerText = "contact" + v;
+  document.querySelector("#msg").style.display = "block";
+  v++;
 }

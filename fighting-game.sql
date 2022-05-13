@@ -139,3 +139,7 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+SELECT * FROM level INNER JOIN maps ON level.IdMap = maps.id INNER JOIN progress ON progress.Id_map = maps.id INNER JOIN user ON progress.id_user = user.id WHERE user.id = 16;
+
+SELECT level1, maps, idUser, pseudo, IdMap FROM level LEFT JOIN maps ON level.IdMap = maps.id LEFT JOIN progress ON progress.Id_map = maps.id LEFT JOIN user ON progress.id_user = user.id WHERE user.id = 16;

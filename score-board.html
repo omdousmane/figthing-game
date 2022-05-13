@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/help.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/variable.css">
+    <link rel="stylesheet" href="css/univers.css">
+    <link rel="stylesheet" href="css/keyframe.css">
+    <title>Score</title>
+</head>
+
+<body>
+    <!--parent sur lequel on appliquera une image de fond-->
+    <div class="score-wrapper">
+        <!--conteneur principal présentant les informations essentielles de la page-->
+        <main class="container">
+            <h1 class="score-title">SCORE</h1>
+            <div class="score--content">
+                <div class="close-tab">
+                    <a href="#"><img src="images/close-tab.svg" alt="close"></a>
+                </div>
+                <!--Affichage des différents composants du score-->
+                <div class="score-details">
+                    <span class="score-category">Time</span>
+                    <span class="time-played" id="">100000</span>
+                </div>
+                <div class="score-details">
+                    <span class="score-category">Wins</span>
+                    <span class="nb-of-wins" id="">10000</span>
+                </div>
+                <div class="score-details">
+                    <span class="score-category">Lost</span>
+                    <span class="nb-of-losses" id="">10000</span>
+                </div>
+            </div>
+
+            <!--menu retour-->
+            <div class="back-to-menu">
+                <a href="#"><button type="button" id="back-to-menu"
+                        style="width:fit-content; padding-inline: 10px ">BACK TO MENU</button></a>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

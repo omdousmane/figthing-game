@@ -8,51 +8,64 @@
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/variable.css">
   <link rel="stylesheet" href="css/univers.css">
-  <script defer src="js/script.js"></script>
+  <link rel="stylesheet" href="css/keyframe.css">
+  <link rel="icon" type="image/png" href="/assets/flavicon.png" />
+  <!-- <script defer src="js/script.js slide-top"></script> -->
+  <script defer src="js/univers.js"></script>
   <title>univers</title>
 </head>
 
 <body>
   <div class="container">
     <header>
-      <div class="logo slide-top">
-        <img src="./assets/logos.svg" alt="">
-      </div>
-      <div class="slide-top">
+      <a href="index.html" class="logo">
+        <img src="./assets/logos.svg" alt="logo">
+      </a>
+      <a href="help.html" class="hep btn"> Help </a>
+      <a href="score-board.html" class="hep btn"> Score </a>
+      <div class="slide-top menu">
         <img src="./assets/icon/usericon.svg" alt="">
+        <ul class="sub-menu">
+          <li><a href="index.html" class="logout">Déconexion</a></li>
+        </ul>
       </div>
     </header>
-    <main>
-      <div class="map1 map">
+    <main class="roll-in-left">
+      <button class="map1 map">
+        <div href="levelone1.html" class="lock">
+          <!-- <img src="./assets/icon/bxs_lock-open.svg" alt=""> -->
+        </div>
+      </button>
+      <button class="map2 map filter">
+        <div href="levelone2.html" class="lock">
+          <img src="./assets/icon/bxs_lock-open.svg" alt="">
+        </div>
+        <div class="map-name"></div>
+      </button>
+      <button class="map3 map filter">
         <div class="lock">
           <img src="./assets/icon/bxs_lock-open.svg" alt="">
         </div>
-      </div>
-      <div class="map2 map">
+        <div class="map-name"></div>
+      </button>
+      <button class="map4 map filter">
         <div class="lock">
           <img src="./assets/icon/bxs_lock-open.svg" alt="">
         </div>
-      </div>
-      <div class="map3 map">
+        <div class="map-name"></div>
+      </button>
+      <button class="map5 map filter">
         <div class="lock">
           <img src="./assets/icon/bxs_lock-open.svg" alt="">
         </div>
-      </div>
-      <div class="map4 map">
+        <div class="map-name"></div>
+      </button>
+      <button class="map6 map filter">
         <div class="lock">
           <img src="./assets/icon/bxs_lock-open.svg" alt="">
         </div>
-      </div>
-      <div class="map5 map">
-        <div class="lock">
-          <img src="./assets/icon/bxs_lock-open.svg" alt="">
-        </div>
-      </div>
-      <div class="map6 map">
-        <div class="lock">
-          <img src="./assets/icon/bxs_lock-open.svg" alt="">
-        </div>
-      </div>
+        <div class="map-name"></div>
+      </button>
     </main>
   </div>
 </body>
