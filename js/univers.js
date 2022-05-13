@@ -39,6 +39,7 @@ function getUniver(id) {
             const btn = btns[index];
             btn.addEventListener("click", function (e) {
               console.log(e.target.childNodes[1].href);
+              document.location.href = e.target.childNodes[1].href;
               const url = new URL(e.target.childNodes[1].href);
               console.log(url.pathname);
 
