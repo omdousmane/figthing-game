@@ -87,8 +87,8 @@ loadSprite("persoRunLeft", "./assets/sprites/test_samurai/RunLeft.png", {
     anims: {
 
         "runLeft": {
-            from: 0,
-            to: 7,
+            from: 7,
+            to: 0,
             speed: 10,
             loop: true,
         }
@@ -103,9 +103,9 @@ loadSprite("attack2", "./assets/sprites/test_samurai/Attack2.png", {
     anims: {
 
         "attack2": {
-            from: 2,
+            from: 0,
             to: 5,
-            speed: 35,
+            speed: 25,
             loop: false,
         }
     },
@@ -118,9 +118,9 @@ loadSprite("attack2Left", "./assets/sprites/test_samurai/Attack2Left.png", {
     anims: {
 
         "attack2Left": {
-            from: 2,
+            from: 0,
             to: 5,
-            speed: 35,
+            speed: 25,
             loop: false,
         }
     },
@@ -224,10 +224,10 @@ destroy(enemy)
 
 
 const enemy2 = add([
-	sprite("persoIdle"),
+	sprite("persoIdle", {flipX: true} ),
     area({ width: 40, height: 52 }),
 	pos(550, 32),
-	origin("left"),
+	origin("right"),
     scale(2.5),
 	body(),
     // This enemy cycle between 3 states, and start from "idle" state
@@ -243,9 +243,10 @@ enemy2.onStateEnter("attack", () => {
     const dir = p.pos.sub(enemy2.pos).unit();
     // enter "idle" state when the attack animation ends
     if (dir.x < 0) {
-        enemy2.origin = "botleft";
-        enemy2.use(sprite("attack2Left"));
+        enemy2.origin = "botright";
+        enemy2.use(sprite("attack2Left", quad.w = 50));
         p.area.width = 55
+        console.log("attack");
         enemy2.play("attack2Left", {
             // any additional arguments will be passed into the onStateEnter() callback
             onEnd: () => enemy2.enterState("idle", rand(0.5, 1.5)),
@@ -256,6 +257,7 @@ enemy2.onStateEnter("attack", () => {
         enemy2.origin = "botleft";
         enemy2.use(sprite("attack2"));
         p.area.width = 55
+        console.log("attack");
         enemy2.play("attack2", {
             // any additional arguments will be passed into the onStateEnter() callback
             onEnd: () => enemy2.enterState("idle", rand(0.5, 1.5)),
@@ -267,27 +269,32 @@ enemy2.onStateEnter("attack", () => {
 
 // this will run once when enters "idle" state
 enemy2.onStateEnter("idle", () => {
-    enemy2.use(sprite("persoIdle"));
-    enemy2.play("idle");
-    wait(1, () => enemy2.enterState("move"))
+    if (enemy2.curAnim() !== "idle" ) {
+        enemy2.origin = "botleft";
+        enemy2.use(sprite("persoIdle"));
+        enemy2.play("idle");
+    }
+    if (p.exists()) {
+        wait(1, () => enemy2.enterState("move"));
+    }
 })
 
 // this will run every frame when current state is "move"
 enemy2.onStateUpdate("move", () => {
     const dir = p.pos.sub(enemy2.pos).unit();
+    console.log("enter move state");
     if (p.isGrounded()) {
         enemy2.move(dir.scale(100));
+        console.log("is actually moving");
 		if (dir.x < 0 && enemy2.curAnim() !== "runLeft") {
+            enemy2.origin = "botleft";
 			enemy2.use(sprite("persoRunLeft"));
-			enemy2.play("runLeft", {
-                loop: false
-            });
+			enemy2.play("runLeft");
 			console.log("left");
 		} else if (dir.x > 0 && enemy2.curAnim() !== "run") {
 			enemy2.use(sprite("persoRun"));
-			enemy2.play("run", {
-                loop: false
-            });
+            enemy2.origin = "botleft";
+			enemy2.play("run");
 			console.log("right");
 		}
         if (enemy2.pos.dist(p.pos) < 150) {
@@ -297,10 +304,12 @@ enemy2.onStateUpdate("move", () => {
 
 })
 
-setTimeout( function() {
-    enemy2.enterState("idle");
-}, 2000)
-
+// press enter to start the fight
+onKeyPress("enter",
+    setTimeout( function() {
+        enemy2.enterState("idle");
+    }, 2000)
+)
 
 /* FIN IA*/
 
