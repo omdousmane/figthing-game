@@ -105,7 +105,7 @@ loadSprite("attack2", "./assets/sprites/test_samurai/Attack2.png", {
         "attack2": {
             from: 0,
             to: 5,
-            speed: 25,
+            speed: 35,
             loop: false,
         }
     },
@@ -120,7 +120,7 @@ loadSprite("attack2Left", "./assets/sprites/test_samurai/Attack2Left.png", {
         "attack2Left": {
             from: 0,
             to: 5,
-            speed: 25,
+            speed: 35,
             loop: false,
         }
     },
@@ -166,7 +166,7 @@ const p = add([
         width: 36,
         height: 49.5
     }),
-    pos(),
+    pos(50, 10),
     origin("left"),
     scale(2.5),
     outline(0),
@@ -179,7 +179,7 @@ const sol = add([
     outline(0),
     area(),
     solid(),
-
+    "sol"
 ])
 
 
@@ -191,7 +191,6 @@ const box1 = add([
     rect(20, 850),
     outline(0),
     area(),
-
     origin("center"),
     solid(),
 ])
@@ -226,8 +225,8 @@ destroy(enemy)
 const enemy2 = add([
 	sprite("persoIdle", {flipX: true} ),
     area({ width: 40, height: 52 }),
-	pos(550, 32),
-	origin("right"),
+	pos(750, 32),
+	origin("botright"),
     scale(2.5),
 	body(),
     // This enemy cycle between 3 states, and start from "idle" state
@@ -239,13 +238,15 @@ enemy2.play("idle")
 
 /*IA*/
 // this callback will run once when enters "attack" state
+
 enemy2.onStateEnter("attack", () => {
     const dir = p.pos.sub(enemy2.pos).unit();
     // enter "idle" state when the attack animation ends
     if (dir.x < 0) {
         enemy2.origin = "botright";
-        enemy2.use(sprite("attack2Left", quad.w = 50));
-        p.area.width = 55
+        // enemy2.use(sprite("attack2Left", quad.w = 50));
+        enemy2.use(sprite("attack2Left"));
+        enemy2.area.width = 55;
         console.log("attack");
         enemy2.play("attack2Left", {
             // any additional arguments will be passed into the onStateEnter() callback
@@ -256,7 +257,7 @@ enemy2.onStateEnter("attack", () => {
     if (dir.x > 0) {
         enemy2.origin = "botleft";
         enemy2.use(sprite("attack2"));
-        p.area.width = 55
+        enemy2.area.width = 55;
         console.log("attack");
         enemy2.play("attack2", {
             // any additional arguments will be passed into the onStateEnter() callback
@@ -269,9 +270,14 @@ enemy2.onStateEnter("attack", () => {
 
 // this will run once when enters "idle" state
 enemy2.onStateEnter("idle", () => {
-    if (enemy2.curAnim() !== "idle" ) {
+    const dir = p.pos.sub(enemy2.pos).unit();
+    if (enemy2.curAnim() !== "idle" && dir.x > 0) {
         enemy2.origin = "botleft";
         enemy2.use(sprite("persoIdle"));
+        enemy2.play("idle");
+    } else {
+        enemy2.origin = "botright";
+        enemy2.use(sprite("persoIdle", { flipX: true }));
         enemy2.play("idle");
     }
     if (p.exists()) {
@@ -305,11 +311,7 @@ enemy2.onStateUpdate("move", () => {
 })
 
 // press enter to start the fight
-onKeyPress("enter",
-    setTimeout( function() {
-        enemy2.enterState("idle");
-    }, 2000)
-)
+onKeyPress("enter", () => enemy2.enterState("idle"));
 
 /* FIN IA*/
 
@@ -321,32 +323,6 @@ function getRandomInt(min, max) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-onKeyPress("a", () => {
-
-
-    // .play() will reset to the first frame of the anim, so we want to make sure it only runs when the current animation is not "run"
-    if (p.isGrounded() && p.curAnim() !== "run") {
-        p.use(sprite("attack2"))
-        p.area.width = 55
-      //  console.table(p.area.height)
-        p.play("attack2")
-
-    }
-})
 
 
 
@@ -418,7 +394,7 @@ const updateBarLength = () => {
 };
 
 
-
+//attack2 right animation
 p.onCollide("enemy", (enemy) => {
 
 
@@ -479,79 +455,104 @@ function takeDegat(position, dammage) {
 
 
 /* ****************** */
+let attackTurn = false;
+onKeyPress("a", () => {
+    // .play() will reset to the first frame of the anim, so we want to make sure it only runs when the current animation is not "run"
+    if (p.isGrounded() && !attackTurn) {
+        p.origin = "botleft";
+        p.use(sprite("attack2"));
+        p.area.width = 55;
+        p.play("attack2");
+    }
+    if (p.isGrounded() && attackTurn) {
+        p.origin = "botright";
+        p.use(sprite("attack2Left"))
+        p.area.width = 55
+        p.play("attack2Left")
 
+    }
+})
+// face right when attack end
 p.onAnimEnd("attack2", () => {
-    p.area.width = 40
+    p.area.width = 36;
+    p.origin = "botleft";
     p.use(sprite("persoIdle"));
     p.play("idle");
 })
 
-
+// face left when attack end
+p.onAnimEnd("attack2Left", () => {
+    p.area.width = 36;
+    p.origin = "botright";
+    p.use(sprite("persoIdle", { flipX: true }));
+    p.play("idle");
+    p.onAnimEnd("idle", ()=> { p.flipX = false;})
+})
 
 
 onKeyDown("left", () => {
-    p.move(-SPEED, 0)
-
-    // .play() will reset to the first frame of the anim, so we want to make sure it only runs when the current animation is not "run"
-    if (p.isGrounded() && p.curAnim() == "idle" && !isKeyDown("right") || p.isGrounded() && p.curAnim() == "run") {
-        console.log(p.curAnim())
-        p.area.width = 36
-
-        //console.table(p)
-
-        p.use(sprite("persoRunLeft"))
-        p.play("runLeft")
-
-
+    attackTurn = true;
+    // on peut pas bouger et attaquer en même temps
+    if (!isKeyDown("a") && !isKeyDown("z") && !isKeyDown("right")) {
+        p.move(-SPEED, 0);
+        // .play() will reset to the first frame of the anim, so we want to make sure it only runs when the current animation is not "run"
+        if (p.isGrounded() && p.curAnim() !== "runLeft") {
+            p.origin = "botleft";
+            p.use(sprite("persoRunLeft"));
+            p.play("runLeft");
+        }
     }
 })
 
-
+onKeyRelease("left", () => {
+    if (p.isGrounded()) {
+        p.origin = "botright";
+        p.use(sprite("persoIdle", { flipX: true }));
+        p.play("idle");
+        p.onAnimEnd("idle", ()=> { p.flipX = false})
+    }
+})
 
 onKeyDown("right", () => {
-    p.move(+SPEED, 0)
-
-    // .play() will reset to the first frame of the anim, so we want to make sure it only runs when the current animation is not "run"
-    if (p.isGrounded() && p.curAnim() == "idle" && !isKeyDown("left")) {
-        p.use(sprite("persoRun"))
-        p.area.width = 36
-        // console.table( p.area())
-        p.play("run")
+    attackTurn = false;
+    if (!isKeyDown("a") && !isKeyDown("z") && !isKeyDown("left")) {
+        p.move(+SPEED, 0)
+        // .play() will reset to the first frame of the anim, so we want to make sure it only runs when the current animation is not "run"
+        if (p.isGrounded() && p.curAnim() !== "run") {
+            p.origin = "botleft";
+            p.use(sprite("persoRun"))
+            p.play("run")
+        }
     }
 })
 
-
-onKeyRelease(["left", "right", "a"], () => {
-    // Only reset to "idle" if player is not holding any of these keys
-    if (p.isGrounded() && !isKeyDown("left") && !isKeyDown("right")) {
-        p.use(sprite("persoIdle"))
-        p.play("idle")
-    }
-
-    if (!isKeyDown("a") || isKeyDown("left")) {
-        p.area.width = 36
+onKeyRelease("right", () => {
+    if (p.isGrounded()) {
+        p.origin = "botleft";
+        p.use(sprite("persoIdle"));
+        p.play("idle");
     }
 })
 
 onKeyPress(["space", "up"], () => {
     // .move() is provided by pos() component, move by pixels per second
     if (p.isGrounded()) {
-        p.use(sprite("persoJump"))
-        p.play("jump")
-        p.jump(JUMP_FORCE)
-
-
+        p.jump(JUMP_FORCE);
+        p.origin = "botleft";
+        p.use(sprite("persoJump"), { flipX: false });
+        p.play("jump");
     }
-
 })
+
 onKeyRelease(["space", "up"], () => {
-    p.use(sprite("persoIdle"))
-    p.play("idle")
-
+    p.onCollide("sol", ()=> {
+            p.origin = "botleft";
+            p.use(sprite("persoIdle"));
+            p.play("idle");
+    })
 })
+
 let persoPrincipale = new player(100, 10, 20)
 
-
-
-
-debug.inspect = true
+debug.inspect = true;
+debug.showLog = true
