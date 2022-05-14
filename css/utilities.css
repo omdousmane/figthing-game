@@ -1,0 +1,108 @@
+.container {
+  padding: 20px 20px;
+  text-transform: uppercase;
+  width: 100%;
+  height: 100vh;
+  background: radial-gradient(
+      132.84% 133.1% at 50% 50%,
+      #000000 0%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    url(../assets/backgroundhome.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-clip: padding-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+}
+
+.alert-warning {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 6px 15px;
+  gap: 10px;
+  width: 500px;
+  height: 30px;
+  background: rgba(239, 22, 22, 0.25);
+  backdrop-filter: blur(4px);
+  border-radius: 8px;
+  color: var(--bg-white);
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  margin-bottom: 10px;
+}
+.alert-succes {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 6px 15px;
+  gap: 10px;
+  width: 500px;
+  height: 30px;
+  background-color: #74992e;
+  backdrop-filter: blur(4px);
+  border-radius: 8px;
+  color: var(--bg-white);
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  margin-bottom: 10px;
+}
+
+.input,
+.btn {
+  color: var(--bg-white);
+  width: 500px;
+  height: 70px;
+  border-radius: var(--radius);
+  font-size: 30px;
+}
+
+.btn-sm {
+  color: var(--bg-white);
+  width: 200px;
+  height: 70px;
+  border-radius: var(--radius);
+  font-size: 30px;
+}
+
+.input {
+  background: var(--btn-primary);
+  border: var(--input-border);
+  color: var(--bg-white);
+  backdrop-filter: blur(4px);
+  padding: 20px;
+}
+
+:focus {
+  border: none;
+  outline: 4px solid var(--bg-yellow);
+  outline-offset: 0px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+    rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+
+::placeholder {
+  font-weight: 400;
+  line-height: 45px;
+  color: #f4eeee;
+}
+.btn {
+  background: var(--default-btn);
+  border: var(--bg-yellow);
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: 900;
+  font-size: 38px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn:hover {
+  box-shadow: none;
+}

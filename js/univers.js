@@ -3,6 +3,7 @@ let btns = document.querySelectorAll(".map");
 
 const mapContents = ["map1", "map2", "map3", "map4", "map5", "map6"];
 var mapLink = [];
+
 // fonction de verification de clé
 function isKeyExists(obj, key) {
   return key in obj;
@@ -14,13 +15,20 @@ function getUniver(id) {
       if (xhr.status === 200) {
         let results = JSON.parse(xhr.responseText);
         console.log(results);
+        console.log(results[0].pseudo);
+
+        // affichage du message de bienvenue
+        let welcom = document.querySelector(".welcom");
+        welcom.innerHTML = "Tu nous a manqué " + results[0].pseudo;
+
+        setTimeout(function () {
+          welcom.classList.remove("welcom");
+          welcom.innerHTML = "";
+        }, 4000);
 
         if (!results.error) {
-          // console.log(results);
-          var content;
           results
             .map(function (content) {
-              // console.log(content);
               mapLink.push(content.map_link);
               for (let index = 0; index < mapContents.length; index++) {
                 var mapContent = mapContents[index];
@@ -42,7 +50,6 @@ function getUniver(id) {
               document.location.href = e.target.childNodes[1].href;
               const url = new URL(e.target.childNodes[1].href);
               console.log(url.pathname);
-
               for (let i = 0; i < mapLink.length; i++) {
                 const element = mapLink[i];
                 if ("/" + element == url.pathname) {

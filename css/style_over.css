@@ -1,0 +1,83 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    height: 100vh;
+     display: flex;
+    background-color: #eee;
+}
+
+.modal{
+    width: 750px;
+    height: 750px;
+    margin: auto;
+    background: url("./over.webp");
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: relative;
+
+    
+}
+.title{
+    width: 800px;
+    height: 50px;
+    color: #FFD90F;
+    font-size: 40px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: bold;
+    text-align: center;
+    margin: auto;
+     
+}
+.second_title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    margin: 2px;
+}
+h2{
+    padding: 5px;
+}
+.player{
+    position: absolute;
+    left: 100px;
+    top: 100px;
+}
+.bouton{
+    width: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding:  150px 150px;
+    gap: 10px;
+    margin-bottom: 200px;
+    
+   
+}
+.btn{
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 0px -14px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 2px;
+    
+  
+   
+
+  
+}
+.btn-btn{
+    margin: auto;
+    text-transform: uppercase;
+    display: inline-block;
+    background: linear-gradient(180deg, #D2B6F0 0%, #695F73 100%);
+    border-radius: 12px;
+    color: white;
+    text-align: center;
+    font-size: 50x;
+    padding: 20px;
+    width: 450px;
+    text-decoration: none;
+}
