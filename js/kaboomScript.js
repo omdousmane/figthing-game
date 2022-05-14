@@ -277,13 +277,13 @@ enemy2.onStateUpdate("move", () => {
     const dir = p.pos.sub(enemy2.pos).unit();
     if (p.isGrounded()) {
         enemy2.move(dir.scale(100));
-		if (dir.x < 0) {
+		if (dir.x < 0 && enemy2.curAnim() !== "runLeft") {
 			enemy2.use(sprite("persoRunLeft"));
 			enemy2.play("runLeft", {
                 loop: false
             });
 			console.log("left");
-		} else if (dir.x > 0) {
+		} else if (dir.x > 0 && enemy2.curAnim() !== "run") {
 			enemy2.use(sprite("persoRun"));
 			enemy2.play("run", {
                 loop: false
