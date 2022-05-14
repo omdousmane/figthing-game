@@ -9,7 +9,7 @@ const SPEED = 300
 const JUMP_FORCE = 1000
 gravity(1550)
 
-let bgImage = loadSprite("background", "../assets/"+mapBg);
+let bgImage = loadSprite("background", "./assets/"+mapBg);
 let background = add([
     sprite("background"),
     // Make the background centered on the screen
@@ -45,7 +45,7 @@ let background = add([
 
 
 // Loading a multi-frame sprite
-loadSprite("persoIdle", "../assets/sprites/test_samurai/Idle.png", {
+loadSprite("persoIdle", "./assets/sprites/test_samurai/Idle.png", {
     // The image contains 9 frames layed out horizontally, slice it into individual frames
     sliceX: 8,
 
@@ -65,7 +65,7 @@ loadSprite("persoIdle", "../assets/sprites/test_samurai/Idle.png", {
 
 
 
-loadSprite("persoRun", "../assets/sprites/test_samurai/Run.png", {
+loadSprite("persoRun", "./assets/sprites/test_samurai/Run.png", {
     // The image contains 9 frames layed out horizontally, slice it into individual frames
     sliceX: 8,
     // Define animations
@@ -80,7 +80,7 @@ loadSprite("persoRun", "../assets/sprites/test_samurai/Run.png", {
     },
 })
 
-loadSprite("persoRunLeft", "../assets/sprites/test_samurai/RunLeft.png", {
+loadSprite("persoRunLeft", "./assets/sprites/test_samurai/RunLeft.png", {
     // The image contains 9 frames layed out horizontally, slice it into individual frames
     sliceX: 8,
     // Define animations
@@ -96,7 +96,7 @@ loadSprite("persoRunLeft", "../assets/sprites/test_samurai/RunLeft.png", {
 })
 
 
-loadSprite("attack2", "../assets/sprites/test_samurai/Attack2.png", {
+loadSprite("attack2", "./assets/sprites/test_samurai/Attack2.png", {
     // The image contains 9 frames layed out horizontally, slice it into individual frames
     sliceX: 6,
     // Define animations
@@ -111,13 +111,13 @@ loadSprite("attack2", "../assets/sprites/test_samurai/Attack2.png", {
     },
 })
 
-loadSprite("attackEnemy", "../assets/sprites/test_samurai/AttackEnemy.png", {
+loadSprite("attack2Left", "./assets/sprites/test_samurai/Attack2Left.png", {
     // The image contains 9 frames layed out horizontally, slice it into individual frames
     sliceX: 6,
     // Define animations
     anims: {
 
-        "attackEnemy": {
+        "attack2Left": {
             from: 2,
             to: 5,
             speed: 35,
@@ -127,7 +127,7 @@ loadSprite("attackEnemy", "../assets/sprites/test_samurai/AttackEnemy.png", {
 })
 
 
-loadSprite("persoJump", "../assets/sprites/test_samurai/jump1.png", {
+loadSprite("persoJump", "./assets/sprites/test_samurai/jump1.png", {
     // The image contains 9 frames layed out horizontally, slice it into individual frames
     sliceX: 8,
     // Define animations
@@ -168,7 +168,7 @@ const p = add([
     }),
     pos(),
     origin("left"),
-    scale(4.5),
+    scale(2.5),
     outline(0),
     body(),
 ])
@@ -228,88 +228,80 @@ const enemy2 = add([
     area({ width: 40, height: 52 }),
 	pos(550, 32),
 	origin("left"),
-    scale(4.5),
+    scale(2.5),
 	body(),
     // This enemy cycle between 3 states, and start from "idle" state
-	state("idle", [ "idle", "attack", "move", ]),
+	state("idle", [ "idle", "attack", "move" ])
 ])
 
 enemy2.play("idle")
-enemy2.enterState("idle");
-
 
 
 /*IA*/
-enemy2.onStateEnter("idle", async() => {
-    await wait(0);
-    console.log("enter move");
-    enemy2.enterState("move");
+// this callback will run once when enters "attack" state
+enemy2.onStateEnter("attack", () => {
+    const dir = p.pos.sub(enemy2.pos).unit();
+    // enter "idle" state when the attack animation ends
+    if (dir.x < 0) {
+        enemy2.origin = "botleft";
+        enemy2.use(sprite("attack2Left"));
+        p.area.width = 55
+        enemy2.play("attack2Left", {
+            // any additional arguments will be passed into the onStateEnter() callback
+            onEnd: () => enemy2.enterState("idle", rand(0.5, 1.5)),
+        })
+    }
+
+    if (dir.x > 0) {
+        enemy2.origin = "botleft";
+        enemy2.use(sprite("attack2"));
+        p.area.width = 55
+        enemy2.play("attack2", {
+            // any additional arguments will be passed into the onStateEnter() callback
+            onEnd: () => enemy2.enterState("idle", rand(0.5, 1.5)),
+        })
+    }
+
+    // checkHit(enemy2, p)
 })
 
-enemy2.enterState("idle");
-
-enemy2.onStateEnter("move", async () => {
-    await wait(0.0)
-    enemy2.enterState("idle")
+// this will run once when enters "idle" state
+enemy2.onStateEnter("idle", () => {
+    enemy2.use(sprite("persoIdle"));
+    enemy2.play("idle");
+    wait(1, () => enemy2.enterState("move"))
 })
 
-enemy2.onStateUpdate("move", async ()=> {
-    if (!p.exists()) return
-    const dir = p.pos.sub(enemy2.pos).unit()
-    if (enemy2.isGrounded()) {
-        console.log("enemy is moving")
-        enemy2.move(dir.scale(100))
-        let distance = p.pos.x - enemy2.pos.x;
-        if (Math.abs(distance) < 240) {
-            console.log("enter attack")
-            enemy2.enterState("attack")
+// this will run every frame when current state is "move"
+enemy2.onStateUpdate("move", () => {
+    const dir = p.pos.sub(enemy2.pos).unit();
+    if (p.isGrounded()) {
+        enemy2.move(dir.scale(100));
+		if (dir.x < 0) {
+			enemy2.use(sprite("persoRunLeft"));
+			enemy2.play("runLeft", {
+                loop: false
+            });
+			console.log("left");
+		} else if (dir.x > 0) {
+			enemy2.use(sprite("persoRun"));
+			enemy2.play("run", {
+                loop: false
+            });
+			console.log("right");
+		}
+        if (enemy2.pos.dist(p.pos) < 150) {
+            enemy2.enterState("attack");
         }
     }
+
 })
 
-enemy2.onStateEnter("attack", async () => {
-    console.log("attack done")
-    enemy2.origin = "botleft";
-    enemy2.use(sprite("attack2"));
-    enemy2.play("attack2");
-    let distance = p.pos.x - enemy2.pos.x;
-    if (Math.abs(distance) > 240) {
-        console.log("retour idle")
-        enemy2.enterState("idle");
-    }
-})
-/*IA*/
+setTimeout( function() {
+    enemy2.enterState("idle");
+}, 2000)
 
-// Like .onUpdate() which runs every frame, but only runs when the current state is "move"
-// Here we move towards the player every frame if the current state is "move"
-// enemy2.onStateUpdate("move", () => {
-//     let rand=getRandomInt(0, 6);
-//     console.log(rand)
-//     if(rand==1){
-//         if (!p.exists()) return
-//         const dir = p.pos.sub(enemy2.pos).unit()
-//         enemy2.move(dir.scale(600))
-        
-//     }
-	
-// })
 
-enemy2.onStateUpdate("move", async ()=> {
-    if (!p.exists()) return
-    const dir = p.pos.sub(enemy2.pos).unit()
-    if (enemy2.isGrounded()) {
-        console.log("enemy is moving")
-        enemy2.move(dir.scale(100))
-        let distance = p.pos.x - enemy2.pos.x;
-        if (Math.abs(distance) < 40) {
-            console.log("enter attack")
-            enemy2.enterState("attack")
-        }
-    }
-})
-
-// Have to manually call enterState() to trigger the onStateEnter("move") event we defined above.
-enemy2.enterState("move")
 /* FIN IA*/
 
 function getRandomInt(min, max) {
