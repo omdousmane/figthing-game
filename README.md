@@ -1,6 +1,9 @@
 ### INSTRUCTION D'INSTALLATION
 
 Télécharger le jeu et le mettre dans le dossier racine du serveur local (généralement htdocs). Changer les identifiants à la database selon les votres dans le fichier back/database.php
+crée un virtualhost 
+importez la base de donnée 
+et lancé le jeu
 
 # EXOTIC DUNJEON
 
