@@ -13,7 +13,7 @@ const SPEED = 300;
 const JUMP_FORCE = 800;
 gravity(1550);
 var isend = false;
-
+// 2 sprites
 /*ON DECLARE NOTRE JOUEUR ET LE BOSS*/
 var joueur = new player(100, 0.005);
 var adversaire = new player(100, 0.00000002);
@@ -58,7 +58,7 @@ loadSprite("persoIdle", "./assets/sprites/test_samurai/Idle.png", {
       from: 0,
       to: 7,
       // Frame per second
-      speed: 5,
+      speed: 10,
       loop: true,
     },
   },
@@ -100,7 +100,7 @@ loadSprite("attack2", "./assets/sprites/test_samurai/Attack2.png", {
     attack2: {
       from: 0,
       to: 5,
-      speed: 85,
+      speed: 25,
       loop: false,
     },
   },
@@ -134,6 +134,98 @@ loadSprite("persoJump", "./assets/sprites/test_samurai/jump1.png", {
   },
 });
 
+// Sprites du boss
+
+loadSprite("bossIdle", "./assets/sprites/Old_Golem/Old_Golem_idle.png", {
+  sliceY: 6,
+  // Define animations
+  anims: {
+    bossIdle: {
+      from: 0,
+      to: 5,
+      speed: 10,
+      loop: true,
+    },
+  },
+});
+
+loadSprite(
+  "bossIdleRight",
+  "./assets/sprites/Old_Golem/Old_Golem_idle_right.png",
+  {
+    sliceY: 6,
+    // Define animations
+    anims: {
+      bossIdleRight: {
+        from: 0,
+        to: 5,
+        speed: 10,
+        loop: true,
+      },
+    },
+  }
+);
+
+loadSprite("bossWalk", "./assets/sprites/Old_Golem/Old_Golem_walk.png", {
+  sliceY: 8,
+  // Define animations
+  anims: {
+    bossWalk: {
+      from: 0,
+      to: 7,
+      speed: 15,
+      loop: true,
+    },
+  },
+});
+
+loadSprite(
+  "bossWalkRight",
+  "./assets/sprites/Old_Golem/Old_Golem_walk_right.png",
+  {
+    sliceY: 8,
+    // Define animations
+    anims: {
+      bossWalkRight: {
+        from: 0,
+        to: 7,
+        speed: 15,
+        loop: true,
+      },
+    },
+  }
+);
+
+loadSprite("bossAttack1", "./assets/sprites/Old_Golem/Old_Golem_attack.png", {
+  sliceY: 7,
+  // Define animations
+  anims: {
+    bossAttack1: {
+      from: 0,
+      to: 6,
+      speed: 25,
+      loop: false,
+    },
+  },
+});
+
+loadSprite(
+  "bossAttack1Right",
+  "./assets/sprites/Old_Golem/Old_Golem_attack_right.png",
+  {
+    sliceY: 7,
+    // Define animations
+    anims: {
+      bossAttack1Right: {
+        from: 0,
+        to: 6,
+        speed: 25,
+        loop: false,
+      },
+    },
+  }
+);
+
 // Add our player character
 const p = add([
   sprite("persoIdle"),
@@ -152,7 +244,7 @@ const p = add([
 
 const sol = add([
   pos(0, 580),
-  rect(1550, 20),
+  rect(2550, 20),
   outline(0),
   area(),
   solid(),
@@ -184,16 +276,15 @@ const boxCollisionLeft = add([
   rect(35, 850),
   outline(0),
   area(),
-
   origin("center"),
   solid(),
+  "leftBox",
 ]);
 const boxCollisionRight = add([
   pos(822, 220),
   rect(35, 850),
   outline(0),
   area(),
-
   origin("center"),
   solid(),
 ]);
@@ -211,16 +302,14 @@ const enemy = add([
 destroy(enemy);
 
 const enemy2 = add([
-  sprite("persoIdle", {
-    flipX: true,
-  }),
+  sprite("bossIdle"),
   area({
-    width: 25,
-    height: 49.5,
+    width: 52,
+    height: 88,
   }),
-  pos(750, 32),
-  origin("botright"),
-  scale(2.5),
+  pos(650, 32),
+  origin("botleft"),
+  scale(2),
   body(),
   // This enemy cycle between 3 states, and start from "idle" state
   state("idle", ["idle", "attack", "move"]),
@@ -228,22 +317,26 @@ const enemy2 = add([
   rotate(),
 ]);
 
-enemy2.play("idle");
+enemy2.play("bossIdle");
 
 /*IA*/
 // this callback will run once when enters "attack" state
+// let ePosChanged = false
 enemy2.onStateEnter("attack", () => {
   const dir = p.pos.sub(enemy2.pos).unit();
   // enter "idle" state when the attack animation ends
   // ennemi attaque joueur venant de la gauche
   if (dir.x < 0) {
-    enemy2.origin = "botright";
-    if (getRandomInt(1, 3) == 1) {
+    //   enemy2.origin = "botright";
+    // enemy2.pos.x += 2.6*enemy2.area.width;
+    // ePosChanged = true;
+    if (getRandomInt(1, 1) == 1) {
       kick.play();
-      enemy2.use(sprite("attack2Left"));
-      enemy2.area.width = 55;
+      enemy2.origin = "botright";
+      enemy2.use(sprite("bossAttack1"));
+      enemy2.area.width = 100;
       //console.log("attack");
-      enemy2.play("attack2Left", {
+      enemy2.play("bossAttack1", {
         // any additional arguments will be passed into the onStateEnter() callback
         onEnd: () => enemy2.enterState("idle", rand(0.5, 1.5)),
       });
@@ -257,12 +350,12 @@ enemy2.onStateEnter("attack", () => {
   //ennemi attaque joueur venant de la droite
   if (dir.x > 0) {
     enemy2.origin = "botleft";
-    if (getRandomInt(1, 3) == 1) {
+    if (getRandomInt(1, 1) == 1) {
       // perf - console.log(adversaire.attack(joueur))
-      enemy2.use(sprite("attack2"));
-      enemy2.area.width = 55;
+      enemy2.use(sprite("bossAttack1Right"));
+      enemy2.area.width = 100;
       //console.log("attack");
-      enemy2.play("attack2", {
+      enemy2.play("bossAttack1Right", {
         // any additional arguments will be passed into the onStateEnter() callback
         onEnd: () => enemy2.enterState("idle", rand(0.5, 1.5)),
       });
@@ -277,17 +370,24 @@ enemy2.onStateEnter("attack", () => {
 
 // this will run once when enters "idle" state
 enemy2.onStateEnter("idle", () => {
-  enemy2.area.width = 25;
+  console.log(enemy2.pos.dist(p.pos));
+  enemy2.area.width = 52;
   const dir = p.pos.sub(enemy2.pos).unit();
   if (enemy2.curAnim() !== "idle" && dir.x > 0) {
     kick.stop();
     enemy2.origin = "botleft";
-    enemy2.use(sprite("persoIdle"));
-    enemy2.play("idle");
+    // if (ePosChanged) {
+    //     enemy2.pos.x -= 2.6*enemy2.area.width
+    //     ePosChanged = false;
+    // }
+    enemy2.use(sprite("bossIdleRight"));
+    enemy2.play("bossIdleRight");
   } else {
     enemy2.origin = "botright";
-    enemy2.use(sprite("persoIdle", { flipX: true }));
-    enemy2.play("idle");
+    // enemy2.origin = "botright";
+    // ePosChanged = true;
+    enemy2.use(sprite("bossIdle"));
+    enemy2.play("bossIdle");
   }
   if (p.exists()) {
     wait(1, () => enemy2.enterState("move"));
@@ -301,25 +401,46 @@ enemy2.onStateUpdate("move", () => {
   if (p.isGrounded()) {
     enemy2.move(dir.scale(100));
     //console.log("is actually moving");
-    if (dir.x < 0 && enemy2.curAnim() !== "runLeft") {
-      enemy2.origin = "botleft";
-      enemy2.use(sprite("persoRunLeft"));
-      enemy2.play("runLeft");
+    // if (ePosChanged) {
+    //     enemy2.pos.x -= 2.6*enemy2.area.width
+    //     ePosChanged = false;
+    // }
+    if (dir.x < 0 && enemy2.curAnim() !== "bossWalk") {
+      enemy2.origin = "botright";
+      enemy2.use(sprite("bossWalk"));
+      enemy2.play("bossWalk");
       //console.log("left");
-    } else if (dir.x > 0 && enemy2.curAnim() !== "run") {
-      enemy2.use(sprite("persoRun"));
+    } else if (dir.x > 0 && enemy2.curAnim() !== "bossWalkRight") {
+      enemy2.use(sprite("bossWalkRight"));
       enemy2.origin = "botleft";
-      enemy2.play("run");
+      enemy2.play("bossWalkRight");
       //console.log("right");
     }
-    if (enemy2.pos.dist(p.pos) < 220) {
+    if (enemy2.pos.dist(p.pos) < 200) {
+      console.log(enemy2.pos.dist(p.pos));
       enemy2.enterState("attack");
     }
   }
 });
 
+const startText = add([
+  text("PRESS ENTER TO START THE GAME", {
+    size: 28, // 48 pixels tall
+    width: 620, // it'll wrap to next line when width exceeds this value
+    font: "sink", // there're 4 built-in fonts: "apl386", "apl386o", "sink", and "sinko"
+  }),
+  pos(80, 300),
+  color(rgb(222, 92, 72)),
+]);
+
+let allowDamage = false;
 // appuie sur enter pour commencer le combat
-onKeyPress("enter", () => enemy2.enterState("idle"));
+// on peut prendre des dégat seulement après que le début du jeu soit confirmé
+onKeyPress("enter", () => {
+  destroy(startText);
+  enemy2.enterState("idle");
+  allowDamage = true;
+});
 
 /* FIN IA*/
 
@@ -383,7 +504,6 @@ const barreVieEnnemy = add([
   rect(240, 50),
   outline(0),
   origin("left"),
-
   color(rgb(153, 57, 137)),
 ]);
 
@@ -430,14 +550,27 @@ window.setInterval(() => {
 
 /* ***************/
 
-// p.onCollide("enemy", (enemy) => {
-//     if(isKeyDown("a") && !isKeyDown("right")){
-//         destroy(enemy)
-
-//         addDegat(enemy.pos,"100")
+// Bug origin qui fait sortir le boss du background
+// ne marche pas du tout
+// enemy2.onCollide("leftBox", () => {
+//     if(enemy2.pos.x > 780){
+//         enemy2.pos.x -= 200;
 //     }
-
 // })
+
+p.onCollide("enemy2", (enemy2) => {
+  if (allowDamage) {
+    console.log(p.curAnim());
+    if (p.curAnim() == "attack2" || p.curAnim() == "attack2Left") {
+      shake(2);
+
+      // enemy2.color=rgb(rand(0, 255), rand(0, 255), rand(0, 255))
+      takeDegat(enemy2.pos, "+10", rgb(153, 57, 137));
+      console.log(joueur.attack(adversaire));
+      vieEnemy.text = adversaire.getvie();
+    }
+  }
+});
 
 const total = 500;
 let solved = 1;
@@ -449,7 +582,7 @@ const ruleOfThree = (num1, num2) => {
 const updateBarLength = () => {
   const percentage = ruleOfThree(total, solved);
   barreVie.width = percentage;
-  //console.log(percentage)
+  console.log(percentage);
 };
 
 // function takeDegat(position, dammage) {
@@ -496,31 +629,38 @@ function takeDegat(position, dammage, colors) {
 }
 
 enemy2.onCollide("p", (p) => {
-  if (enemy2.curAnim() == "attack2Left" || enemy2.curAnim() == "attack2") {
-    takeDegat(p.pos, "-10", rgb(50, 166, 168));
-    //  perf - console.log(adversaire.attack(joueur))
-    vie.text = joueur.getvie();
-    // p.color=rgb(rand(0, 255), rand(0, 255), rand(0, 255))
-    shake(2);
+  if (allowDamage) {
+    if (
+      enemy2.curAnim() == "bossAttack1" ||
+      enemy2.curAnim() == "bossAttack1Right"
+    ) {
+      takeDegat(p.pos, "-10", rgb(50, 166, 168));
+      console.log(adversaire.attack(joueur));
+      vie.text = joueur.getvie();
+      // p.color=rgb(rand(0, 255), rand(0, 255), rand(0, 255))
+      shake(2);
+    }
   }
 });
 
 p.onCollide("enemy2", (enemy2) => {
-  // perf - console.log(p.curAnim())
-  if (p.curAnim() == "attack2" || p.curAnim() == "attack2Left") {
-    shake(2);
+  if (allowDamage) {
+    console.log(p.curAnim());
+    if (p.curAnim() == "attack2" || p.curAnim() == "attack2Left") {
+      shake(2);
 
-    // enemy2.color=rgb(rand(0, 255), rand(0, 255), rand(0, 255))
-    takeDegat(enemy2.pos, "+10", rgb(153, 57, 137));
-    // perf - console.log(joueur.attack(adversaire))
-    vieEnemy.text = adversaire.getvie();
+      // enemy2.color=rgb(rand(0, 255), rand(0, 255), rand(0, 255))
+      takeDegat(enemy2.pos, "+10", rgb(153, 57, 137));
+      console.log(joueur.attack(adversaire));
+      vieEnemy.text = adversaire.getvie();
+    }
   }
 });
 // p.onUpdate(() => { p.origin="center";  })
 
 p.onUpdate(() => {
   if (joueur.getvie() <= 0) {
-    //console.log("GAME OVER")
+    console.log("GAME OVER");
     /*On  envoie le resultat du combat avec la fonction endGame*/
     let score = joueur.getvie() * 100;
     endGame(score, "lose", timer);
@@ -546,7 +686,7 @@ p.onUpdate(() => {
 enemy2.onUpdate(async () => {
   // p.color=rgb(rand(0, 255), rand(0, 255), rand(0, 255))
   if (adversaire.getvie() <= 0) {
-    // console.log("YOU WIN")
+    console.log("YOU WIN");
     vieEnemy.text = 0;
     /*On  envoie le resultat du combat avec la fonction endGame*/
     score = joueur.getvie() * 100;
@@ -571,6 +711,7 @@ enemy2.onUpdate(() => {
 
 /* *******FIN COLLISION ET DEGAT*********** */
 
+// config touches pour le joueur
 onKeyDown("left", () => {
   attackTurn = true;
   // on peut pas bouger et attaquer en même temps
@@ -584,10 +725,12 @@ onKeyDown("left", () => {
     }
   }
 });
-
+let posChanged;
 onKeyRelease("left", () => {
   if (p.isGrounded()) {
     p.origin = "botright";
+    p.pos.x += 2.6 * p.area.width;
+    posChanged = true;
     p.use(sprite("persoIdle", { flipX: true }));
     p.play("idle");
     p.onAnimEnd("idle", () => {
@@ -603,6 +746,10 @@ onKeyDown("right", () => {
     // .play() will reset to the first frame of the anim, so we want to make sure it only runs when the current animation is not "run"
     if (p.isGrounded() && p.curAnim() !== "run") {
       p.origin = "botleft";
+      if (posChanged) {
+        p.pos.x -= 2.6 * p.area.width;
+        posChanged = false;
+      }
       p.use(sprite("persoRun"));
       p.play("run");
     }
@@ -637,10 +784,28 @@ onKeyRelease(["space", "up"], () => {
 let persoPrincipale = new player(100, 10, 20);
 
 // tentative fix origin
-
-// async function fixOrigin(target) {
-//     if (target.origin === "botright")
+// function turnOrigin (target) {
+//     if (target.origin !== "botleft") {
+//         return true;
+//     } else {
+//         return false;
+//     }
 // }
+// async function fixOrigin(target) {
+//     console.log("hi")
+//     let answer = await turnOrigin();
+//     if (answer) {
+//         console.log("turn");
+//         return target.pos.x += target.area.width;
+//     }
+//     // if (target.origin == "botleft") {
+//     //     console.log("unturn");
+//     //     target.pos.x -= target.area.width;
+//     //     turn = false;
+//     // }
+// }
+
+// fixOrigin(p);
 
 /*Fonction pour terminer le jeu et recuperer le gagnant*/
 /**
@@ -661,6 +826,6 @@ function endGame(score, result, speed) {
     gameEnd: 1,
   };
 }
-endGame();
-debug.inspect = true;
-debug.showLog = true;
+// endGame()
+// debug.inspect = true;
+// debug.showLog = true;
