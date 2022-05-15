@@ -1,8 +1,9 @@
 ### INSTRUCTION D'INSTALLATION
 
-Télécharger le jeu et le mettre dans le dossier racine du serveur local (généralement htdocs). Changer les identifiants à la database selon les votres dans le fichier back/database.php
-crée un virtualhost 
-importez la base de donnée 
+
+Télécharger le ZIP du jeu et le mettre dans le dossier racine du serveur local (généralement htdocs). Changer les identifiants à la database selon les votres dans le fichier back/database.php
+crée un virtualhost
+importez la base de donnée
 et lancé le jeu
 
 # EXOTIC DUNJEON
@@ -15,7 +16,8 @@ Pour jouer l’utilisateur doit en premier lieu se créer un compte avec son adr
 
 ## Commandes - Touches du clavier :
 
-A : Attaque 
+A : Attaque
+
 → Avancer
 ← Reculer
 ↑ Sauter
