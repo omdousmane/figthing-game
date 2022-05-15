@@ -1,5 +1,9 @@
-let btns = document.querySelectorAll(".map");
-// console.log(btns);
+// initialisation de la map1 par defaut
+let firstMap = document.querySelector(".first");
+firstMap.addEventListener("click", () => {
+  const url = new URL(firstMap.childNodes[1].href);
+  document.location = url.origin + "/" + url.pathname;
+});
 
 const mapContents = ["map1", "map2", "map3", "map4", "map5", "map6"];
 var mapLink = [];
@@ -8,14 +12,17 @@ var mapLink = [];
 function isKeyExists(obj, key) {
   return key in obj;
 }
+// recuperation des maps en btn
+let btns = document.querySelectorAll(".map");
+
 function getUniver(id) {
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {
       if (xhr.status === 200) {
         let results = JSON.parse(xhr.responseText);
-        console.log(results);
-        console.log(results[0].pseudo);
+        // console.log(results);
+        // console.log(results[0].pseudo);
 
         // affichage du message de bienvenue
         let welcom = document.querySelector(".welcom");
@@ -33,35 +40,20 @@ function getUniver(id) {
               for (let index = 0; index < mapContents.length; index++) {
                 var mapContent = mapContents[index];
                 if (content.maps === mapContent) {
-                  console.log(mapContent);
                   let maps = document.querySelector("." + mapContent);
-                  if (maps.classList.remove("filter")) {
-                  }
+                  maps.addEventListener("click", (e) => {
+                    const url = new URL(maps.childNodes[1].href);
+                    console.log(url.origin + "/" + content.map_link);
+                    document.location.href =
+                      url.origin + "/" + content.map_link;
+                  });
+                  maps.removeAttribute("disabled");
+                  maps.classList.remove("filter");
                   maps.childNodes[1].style.display = "none";
                 }
               }
             })
             .join("");
-
-          for (let index = 0; index < btns.length; index++) {
-            const btn = btns[index];
-            btn.addEventListener("click", function (e) {
-              console.log(e.target.childNodes[1].href);
-              document.location.href = e.target.childNodes[1].href;
-              const url = new URL(e.target.childNodes[1].href);
-              console.log(url.pathname);
-              for (let i = 0; i < mapLink.length; i++) {
-                const element = mapLink[i];
-                if ("/" + element == url.pathname) {
-                  let link = e.target.childNodes[1].href;
-                  document.location.href = e.target.childNodes[1].href = link;
-                  console.log(
-                    (e.target.childNodes[1].href = url.origin + "/" + element)
-                  );
-                }
-              }
-            });
-          }
         }
       }
     }
@@ -70,22 +62,12 @@ function getUniver(id) {
   xhr.send();
 }
 
-for (let index = 0; index < btns.length; index++) {
-  const btn = btns[index];
-  btn.addEventListener("click", function () {
-    // console.log(btn);
-    // console.log("diallo");
-  });
-}
-
 // Récupérer des données depuis sessionStorage
 var idUser = sessionStorage.getItem("idUser");
 
 // requette ajax d'envoi et recuperation de donnée du user
 if (idUser) {
   getUniver(idUser);
-} else {
-  // alert("pas d'id");
 }
 
 //  avenement de Déconexion

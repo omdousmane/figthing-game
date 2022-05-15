@@ -41,7 +41,7 @@ function registerGameState($stat)
   return $id ?? false;
 }
 
-echo json_encode($_POST);
+// echo json_encode($_POST);
 
 
 //recuperation des données en post

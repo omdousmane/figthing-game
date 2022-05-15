@@ -43,7 +43,8 @@ main {
   background-image: url(../assets/6.webp);
 }
 
-.map {
+.map,
+.first {
   background-repeat: no-repeat;
   background-size: cover;
   background-clip: padding-box;
@@ -101,6 +102,3 @@ main {
   font-weight: 800;
   font-size: 24px;
 }
-/* .lock{
-  width: ;
-} */

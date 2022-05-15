@@ -10,11 +10,13 @@
   <link rel="stylesheet" href="css/univers.css">
   <link rel="stylesheet" href="css/utilities.css">
   <link rel="stylesheet" href="css/keyframe.css">
-  <link rel="stylesheet" href="css/modal-help.css">
+  <link rel="stylesheet" href="css/help.css">
+
   <link rel="icon" type="image/png" href="/assets/flavicon.png" />
+
   <!-- le script JS -->
   <script defer src="js/univers.js"></script>
-  <script defer src="js/script_over.js"></script>
+  <script defer src="js/help.js"></script>
   <title>univers</title>
 </head>
 
@@ -24,8 +26,34 @@
       <a href="index.html" class="logo">
         <img src="./assets/logos.svg" alt="logo">
       </a>
-      <a href="#modal" class="modal btn btn-sm"> Help </a>
-      <a href="score-board.html" class=" btn btn-sm"> Score </a>
+
+      <!-- <a href="#modal" class="modal btn btn-sm"> Help </a> -->
+      <button id="myBtn" class="btn btn-sm">Help</button>
+      <!-- The Modal -->
+      <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content scale-in-center">
+          <img src="/assets/icon/close.svg" class="close" alt="close">
+          <h1>HELP</h1>
+          <div class="modal-body">
+            <div class="attaque1">
+              <img src="/assets/icon/a.svg" class="touch" alt="">
+              <div class="text">Attaque principale</div>
+            </div>
+            <div class="attaque2">
+              <img src="/assets/icon/z.svg" class="touch" alt="">
+              <div class="text">Attaque Secondaire</div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <img src="/assets/icon/direction.svg" alt="">
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- <a href="score-board.html" class=" btn btn-sm"> Score </a> -->
       <div class="slide-top menu">
         <img src="./assets/icon/usericon.svg" alt="">
         <ul class="sub-menu">
@@ -34,56 +62,36 @@
       </div>
     </header>
     <div class="alert-success welcom roll-in-right"></div>
-    <div class="modal-help modal-show" id="modal" aria-hidden="true" role="dialog" style="display:none ;">
-      <img src="/assets/icon/close.svg" class="close" alt="close">
-      <div class="modal-header">
-        <h1 class="modal-header">HELP</h1>
-      </div>
-      <div class="modal-body">
-        <div class="atack1">
-          <img src="/assets/icon/a.svg" alt="direction">
-          <span>Attaque principale</span>
-        </div>
-        <div class="atack2">
-          <img src="/assets/icon/z.svg" alt="direction">
-          <span>Attaque secondaire</span>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <img src="/assets/icon/direction.svg" alt="direction">
-        <!-- <span>Avancer, reculer, sauter</span> -->
-      </div>
-    </div>
     <main class="roll-in-left">
-      <button class="map1 map">
+      <button class="map1 first">
         <a href="levelDemo.html" class="lock"> </a>
         <div class="map-name">Ville</div>
       </button>
-      <button class="map2 map filter">
-        <a href="levelTwo.html" class="lock">
+      <button class="map2 map filter" disabled>
+        <a href="#" class="lock">
           <img src="./assets/icon/bxs_lock-open.svg" alt="">
         </a>
         <div class="map-name">Prisson</div>
       </button>
-      <button class="map3 map filter">
-        <a href="levelTree.html" class="lock">
+      <button class="map3 map filter" disabled>
+        <a href="#" class="lock">
           <img src="./assets/icon/bxs_lock-open.svg" alt="">
         </a>
         <div class="map-name">Desert</div>
       </button>
-      <button class="map4 map filter">
-        <a href="levelFour.html" class="lock">
+      <button class="map4 map filter" disabled>
+        <a href="#" class="lock">
           <img src="./assets/icon/bxs_lock-open.svg" alt="">
         </a>
         <div class="map-name">Forêt</div>
       </button>
-      <button class="map5 map filter">
-        <a href="levelFive.html" class="lock">
+      <button class="map5 map filter" disabled>
+        <a href="#" class="lock">
           <img src="./assets/icon/bxs_lock-open.svg" alt="">
         </a>
         <div class="map-name">Grotte</div>
       </button>
-      <button class="map6 map filter">
+      <button class="map6 map filter" disabled>
         <a href="levelSix.html" class="lock">
           <img src="./assets/icon/bxs_lock-open.svg" alt="">
         </a>
