@@ -812,6 +812,6 @@ kaboom({
     };
   }
   // endGame()
-  debug.inspect = true;
-  debug.showLog = true;
+  // debug.inspect = true;
+  // debug.showLog = true;
   
