@@ -14,7 +14,7 @@
 }
 
 /* Modal Content */
-.modal-content {
+.modal-contents {
   /* background-color: #fefefe; */
   margin: auto;
   padding: 20px;
@@ -27,20 +27,20 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  /* gap: 40px; */
 }
-h1 {
+.modal-contents h1 {
   font-family: "game";
   text-align: center;
   font-size: 45px;
   font-weight: 900;
 }
-.modal-body {
+.modal-contents .modal-bodies {
   margin: 50px;
   padding-top: 50px;
 }
 /* The Close Button */
-.close {
+.modal-contents .close {
   position: absolute;
   top: -25px;
   right: -25px;
@@ -49,13 +49,13 @@ h1 {
   font-weight: 900;
 }
 
-.touch {
+.modal-contents .touch {
   width: 70px;
   height: 70px;
   margin-right: 60px;
   margin-bottom: 10px;
 }
-.text {
+.modal-contents .text {
   font-size: 24px;
   font-weight: 900;
 }
@@ -64,7 +64,7 @@ h1 {
   display: flex;
   /* justify-content: space-between; */
   align-items: center;
-  width: 70%;
+  width: 100%;
 }
 .close:hover,
 .close:focus {
@@ -72,7 +72,7 @@ h1 {
   text-decoration: none;
   cursor: pointer;
 }
-.modal-footer {
+.modal-footers {
   display: flex;
   align-items: center;
   justify-content: center;

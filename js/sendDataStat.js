@@ -1,48 +1,51 @@
 var getHttpRequest = function () {
-    var httpRequest = false;
-  
-    if (window.XMLHttpRequest) {
-      // Mozilla, Safari,...
-      httpRequest = new XMLHttpRequest();
-      if (httpRequest.overrideMimeType) {
-        httpRequest.overrideMimeType("text/xml");
-      }
-    } else if (window.ActiveXObject) {
-      // IE
-      try {
-        httpRequest = new ActiveXObject("Msxml2.XMLHTTP");
-      } catch (e) {
-        try {
-          httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
-        } catch (e) {}
-      }
-    }
-  
-    if (!httpRequest) {
-      alert("Abandon :( Impossible de créer une instance XMLHTTP");
-      return false;
-    }
-    return httpRequest;
-  };
-  
-  // var dataStat = {
-  //   idUser: idUser,
-  //   idMap: idMap,
-  //   score: score,
-  //   result: result,
-  //   speed: speed,
-  //   degats: degats,
-  //   bossLive: bossLive,
-  //   gameEnd: gameEnd,
-  // };
-  
-  
-  
-  // Recuperation des elements classes
+  var httpRequest = false;
 
-  
-  document.querySelector(".sendData").addEventListener("click", () => {
-      
+  if (window.XMLHttpRequest) {
+    // Mozilla, Safari,...
+    httpRequest = new XMLHttpRequest();
+    if (httpRequest.overrideMimeType) {
+      httpRequest.overrideMimeType("text/xml");
+    }
+  } else if (window.ActiveXObject) {
+    // IE
+    try {
+      httpRequest = new ActiveXObject("Msxml2.XMLHTTP");
+    } catch (e) {
+      try {
+        httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+      } catch (e) {}
+    }
+  }
+
+  if (!httpRequest) {
+    alert("Abandon :( Impossible de créer une instance XMLHTTP");
+    return false;
+  }
+  return httpRequest;
+};
+
+let d = new Date();
+var date = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+var hours = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+// console.log(date + " " + hours);
+// console.log(date);
+
+var dataStat = {
+  idUser: "9",
+  idMap: "1",
+  score: "1000",
+  result: "win",
+  speed: "100",
+  degats: "1000",
+  bossLive: "5",
+  gameEnd: date + " " + hours,
+};
+
+// Recuperation des elements classes
+
+document.querySelector("#sendData").addEventListener("click", () => {
+  console.log("diallo");
   let data = new FormData();
   data.append("idUser", dataStat.idUser);
   data.append("idMap", dataStat.idMap);
@@ -52,49 +55,48 @@ var getHttpRequest = function () {
   data.append("degats", dataStat.degats);
   data.append("bossLive", dataStat.bossLive);
   data.append("gameEnd", dataStat.gameEnd);
-    let xhr = getHttpRequest();
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4) {
-        if (xhr.status != 200) {
-          let errors = JSON.parse(xhr.responseText);
-          console.log(errors);
-        } else {
-          let results = xhr.responseText;
-          console.log(results);
-  
-          // traitement de la reponse de la requette ajax
-        }
+  let xhr = getHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      if (xhr.status != 200) {
+        let errors = JSON.parse(xhr.responseText);
+        console.log(errors);
+      } else {
+        let results = xhr.responseText;
+        console.log(results);
+        // traitement de la reponse de la requette ajax
       }
-    };
-    xhr.open("POST", "./back/controllersStatUser.php", true);
-    xhr.setRequestHeader("X-Requested-With", "xmlhttprequest");
-    xhr.send(data);
-  });
-  
-  // recupration des elements statistique du joueur
-  function getStatGamer(idUser) {
-    let xhr = getHttpRequest();
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          let results = xhr.responseText;
-  
-          console.log(results);
-          // traitement de la reponse de la requette ajax
-  
-          html = `
-                <div class="alert-succes role="alert">
-                
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-              `;
-          // alert.innerHTML = html;
-        } else {
-          alert("impossible datteindre le server");
-        }
+    }
+  };
+  xhr.open("POST", "./back/controllersStatUser.php", true);
+  xhr.setRequestHeader("X-Requested-With", "xmlhttprequest");
+  xhr.send(data);
+});
+
+// recupration des elements statistique du joueur
+function getStatGamer(idUser) {
+  let xhr = getHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        let results = JSON.parse(xhr.responseText);
+        console.log(results);
+        // traitement de la reponse de la requette ajax
+        results.map(function (content) {
+          if (content.result === "win") {
+            let newMap = Number(content.idMap) + Number(content.idMap);
+            console.log(newMap);
+          } else {
+          }
+        });
+      } else {
+        alert("impossible datteindre le server");
       }
-    };
-    xhr.open("GET", "./back/controllersStatUser.php?pseudo=" + idUser);
-    xhr.send();
-  }
-  //getStatGamer(dataStat.idUser);
+    }
+  };
+  xhr.open("GET", "./back/controllersStatUser.php?idUser=" + idUser);
+  xhr.send();
+}
+document.querySelector("#sendData").addEventListener("click", () => {
+  getStatGamer(dataStat.idUser);
+});

@@ -7,7 +7,7 @@ $pdo = require 'database.php';
 function getGameState($idUser)
 {
   global $pdo;
-  $stmtGetGameState = $pdo->prepare('SELECT * FROM level LEFT JOIN maps ON level.IdMap = maps.id LEFT JOIN progress ON progress.id_map = maps.id LEFT JOIN user ON progress.id_user = user.id WHERE user.id =:idUser');
+  $stmtGetGameState = $pdo->prepare('SELECT * FROM `part` WHERE idUser =:idUser');
   $stmtGetGameState->bindValue(':idUser', $idUser);
   $stmtGetGameState->execute();
   $level = $stmtGetGameState->fetchAll();
@@ -41,14 +41,13 @@ function registerGameState($stat)
   return $id ?? false;
 }
 
-echo json_encode($_POST);
-
 
 //recuperation des données en post
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $countTab = count($_POST);
   if ($countTab != 1) {
+    // echo json_encode($_POST);
 
     if (array_key_exists('idUser', $_POST) && array_key_exists('result', $_POST)) {
       $input = filter_input_array(INPUT_POST, [
@@ -57,14 +56,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       ]);
       // creation du tableau de donnée 
       $stat = [
-        'idUser' => $_POST['idUser'],
+        'idUser' => $input['idUser'],
         'idMap' => $_POST['idMap'],
         'score' => $_POST['score'],
-        'result' => $_POST['result'],
+        'result' => $input['result'],
         'speed' => $_POST['speed'],
         'degats' => $_POST['degats'],
         'bossLive' => $_POST['bossLive'],
-        'gameEnd'=> $_POST['gameEnd']
+        'gameEnd' => $_POST['gameEnd']
       ];
 
       $StatRegister = registerGameState($stat);
@@ -79,23 +78,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 }
 
-echo json_encode($_GET);
+// echo json_encode($_GET);
 
 
-// if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-//   //Recuperation des states
-//   if (array_key_exists('idUser', $_GET)) {
-//     $input = filter_input_array(INPUT_GET, [
-//       'idUser' => FILTER_SANITIZE_NUMBER_INT,
-//     ]);
-//     $idUser = $input['idUser'] ?? "";
-//     $stat = getGameState($idUser);
-//     if ($stat) {
-//       echo json_encode($stat);
-//     } else {
-//       echo json_encode([
-//         'error' => "Aucune information disponible 😒",
-//       ]);
-//     }
-//   }
-// }
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+  //Recuperation des states
+  if (array_key_exists('idUser', $_GET)) {
+    $input = filter_input_array(INPUT_GET, [
+      'idUser' => FILTER_SANITIZE_NUMBER_INT,
+    ]);
+    $idUser = $input['idUser'] ?? "";
+    $stat = getGameState($idUser);
+    if ($stat) {
+      echo json_encode($stat);
+    } else {
+      echo json_encode([
+        'error' => "Aucune information disponible 😒",
+      ]);
+    }
+  }
+}
