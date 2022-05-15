@@ -28,24 +28,9 @@ var getHttpRequest = function () {
 let d = new Date();
 var date = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
 var hours = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-// console.log(date + " " + hours);
-// console.log(date);
 
-var dataStat = {
-  idUser: "9",
-  idMap: "1",
-  score: "1000",
-  result: "win",
-  speed: "100",
-  degats: "1000",
-  bossLive: "5",
-  gameEnd: date + " " + hours,
-};
-
-// Recuperation des elements classes
-
-document.querySelector("#sendData").addEventListener("click", () => {
-  console.log("diallo");
+document.querySelector(".sendData").addEventListener("click", () => {
+  // console.log("diallo");
   let data = new FormData();
   data.append("idUser", dataStat.idUser);
   data.append("idMap", dataStat.idMap);
@@ -81,11 +66,17 @@ function getStatGamer(idUser) {
       if (xhr.status === 200) {
         let results = JSON.parse(xhr.responseText);
         console.log(results);
+
         // traitement de la reponse de la requette ajax
         results.map(function (content) {
           if (content.result === "win") {
             let newMap = Number(content.idMap) + Number(content.idMap);
-            console.log(newMap);
+            document
+              .querySelector(".next-level")
+              .addEventListener("click", () => {
+                window.location = "https://leveltwo.html";
+                console.log(newMap);
+              });
           } else {
           }
         });
@@ -97,6 +88,7 @@ function getStatGamer(idUser) {
   xhr.open("GET", "./back/controllersStatUser.php?idUser=" + idUser);
   xhr.send();
 }
-document.querySelector("#sendData").addEventListener("click", () => {
+document.querySelector(".sendData").addEventListener("click", () => {
   getStatGamer(dataStat.idUser);
+  window.location = "http://jeu:8080/univers.html";
 });

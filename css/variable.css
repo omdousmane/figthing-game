@@ -3,6 +3,7 @@
   src: url(../font/Poppins-Regular.ttf);
 }
 @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;700&family=Press+Start+2P&display=swap");
 
 @font-face {
   font-family: "game";
@@ -72,4 +73,18 @@
   -webkit-animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
     both;
   animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.slide-top {
+  -webkit-animation: slide-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s
+    both;
+  animation: slide-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s both;
+}
+
+#msg {
+  font-size: 44px;
+  color: red;
+  left: 50%;
+  position: absolute;
+  display: none;
 }

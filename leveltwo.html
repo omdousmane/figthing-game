@@ -5,36 +5,59 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/customBody.css">
-<<<<<<< HEAD
-  <script defer src="js/app2.js"></script>
-=======
-
->>>>>>> df1dc39a6ee68033e5e9e1840d2a2b797b71a763
-
+  <link rel="stylesheet" href="css/modal.css">
   <title>Fighting Game</title>
+  <script defer src="https://unpkg.com/kaboom/dist/kaboom.js"></script>
+  <script defer src="js/player.js"></script>
+
+  <script defer src="js/level2KaboomScript.js"></script>
+  <script defer src="js/map.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;700&family=Press+Start+2P&display=swap');
+  </style>
 </head>
 
 <body id="body">
   <main id="main">
-    <div id="logo" class="slide-top">
-      <img src="assets/logo.png" alt="" width="250px">
+    <div class="progression-wrapper">
+      <section class="progression-container">
+        <div class="close-tab">
+          <img src="/assets/icon/close.svg" alt="close">
+        </div>
+        <div style="display:flex;">
+          <h1 class="result-title">YOU WON!</h1>
+        </div>
+
+        <!--Affichage du score-->
+        <div class="score">
+          <span class="result">Score :</span>
+          <span class="score-number" id="score">exemple</span>
+        </div>
+
+        <!--Boutons fonctionnels, retour au menu-->
+        <div class="endgame-options">
+          <button type="button" id="try-again" class="next-level">NEXT LEVEL</button>
+          <button type="button" id="back-to-menu" class="sendData">BACK TO MENU</button>
+        </div>
     </div>
+
     <style>
       #msg {
         font-size: 44px;
         color: red;
         left: 50%;
+        /* font-familly: sans-serif; */
         position: absolute;
         display: none
       }
     </style>
     <div id="msg">OK</div>
+
   </main>
 
-  <script src="js/app2.js"></script>
+
 </body>
 
 </html>

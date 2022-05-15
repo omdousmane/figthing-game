@@ -1,66 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 
-	<head>
-		<meta charset="UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
-		<link rel="stylesheet" href="css/reset.css">
-		<link rel="stylesheet" href="css/customBody.css">
-		<link rel="stylesheet" href="css/modal.css">
-		<title>Fighting Game</title>
-		<script defer src="https://unpkg.com/kaboom/dist/kaboom.js"></script>
-		<script defer src="js/player.js"></script>
-		
-		<script defer src="js/kaboomScript.js"></script>
-		<script defer src="js/sendDataStat.js"></script>
-		<script defer src="js/map.js"></script>
-		<style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;700&family=Press+Start+2P&display=swap');
-        </style> 
-	</head>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/customBody.css">
+	<link rel="stylesheet" href="css/modal.css">
+	<title>Fighting Game</title>
+	<script defer src="https://unpkg.com/kaboom/dist/kaboom.js"></script>
+	<script defer src="js/player.js"></script>
 
-	<body id="body">
-		<main id="main">
+	<script defer src="js/sendDataStat.js"></script>
+	<script defer src="js/map.js"></script>
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;700&family=Press+Start+2P&display=swap');
+	</style>
+</head>
 
-		<div class="progression-wrapper" >
-		 <section class="progression-container">
-            <div class="close-tab">
-                <img src="images/close.svg" alt="close">
-                </div>
-            <div style="display:flex;">      
-             <h1 class="result-title">YOU WON!</h1>
-            </div>       
-        <!--Affichage du score-->
-        <div class="score">
-        <span class="result">Score :</span>
-        <span class="score-number" id="score">exemple</span>
-        </div>
-      
-        <!--Boutons fonctionnels, retour au menu-->
-        <div class="endgame-options">
-        <button type="button" id="try-again">NEXT LEVEL</button>
-        <button type="button" id="back-to-menu" class="sendData">BACK TO MENU</button>
-        </div>
-		
+<body id="body">
+	<main id="main">
+		<div class="progression-wrapper">
+			<section class="progression-container">
+				<div class="close-tab">
+					<img src="/assets/icon/close.svg" alt="close">
+				</div>
+				<div style="display:flex;">
+					<h1 class="result-title">YOU WON!</h1>
+				</div>
+
+				<!--Affichage du score-->
+				<div class="score">
+					<span class="result">Score :</span>
+					<span class="score-number" id="score">exemple</span>
+				</div>
+
+				<!--Boutons fonctionnels, retour au menu-->
+				<div class="endgame-options">
+					<button type="button" id="try-again" class="next-level">NEXT LEVEL</button>
+					<button type="button" id="back-to-menu" class="sendData">BACK TO MENU</button>
+				</div>
 		</div>
-		
-			<style>
-				#msg {
-					font-size: 44px;
-					color: red;
-					left: 50%;
-					font-familly: sans-serif;
-					position: absolute;
-					display: none
-				}
-			</style>
-			<div id="msg">OK</div>
-		
-		</main>
-		
-		
-	</body>
+
+		<style>
+			#msg {
+				font-size: 44px;
+				color: red;
+				left: 50%;
+				/* font-familly: sans-serif; */
+				position: absolute;
+				display: none
+			}
+		</style>
+		<div id="msg">OK</div>
+
+	</main>
+
+
+</body>
 
 </html>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : ven. 13 mai 2022 à 16:38
+-- Généré le : dim. 15 mai 2022 à 21:49
 -- Version du serveur : 5.7.36
 -- Version de PHP : 8.0.13
 
@@ -100,7 +100,31 @@ CREATE TABLE IF NOT EXISTS `part` (
   PRIMARY KEY (`id`),
   KEY `idUser` (`idUser`),
   KEY `idMap` (`idMap`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `part`
+--
+
+INSERT INTO `part` (`id`, `idUser`, `idMap`, `score`, `result`, `speed`, `degats`, `bossLive`, `gameBegin`, `gameEnd`) VALUES
+(1, 16, 1, 1000, 'win', 100, 1000, 5, '2022-05-15 19:55:15', '2022-05-15 19:55:14'),
+(2, 9, 1, 1000, 'win', 100, 1000, 5, '2022-05-15 20:02:07', '2022-05-15 20:02:05'),
+(3, 9, 1, 9800, 'win', 17, 100, 100, '2022-05-15 21:05:55', '2022-05-15 21:05:38'),
+(4, 9, 1, 9800, 'win', 21, 100, 100, '2022-05-15 21:05:59', '2022-05-15 21:05:38'),
+(5, 9, 1, 10000, 'win', 18, 100, 100, '2022-05-15 21:17:02', '2022-05-15 21:16:29'),
+(6, 9, 1, 10000, 'win', 21, 100, 100, '2022-05-15 21:17:05', '2022-05-15 21:16:29'),
+(7, 9, 1, 10000, 'win', 13, 100, 100, '2022-05-15 21:27:30', '2022-05-15 21:27:17'),
+(8, 9, 1, 10000, 'win', 15, 100, 100, '2022-05-15 21:29:05', '2022-05-15 21:28:49'),
+(9, 9, 1, 10000, 'win', 18, 100, 100, '2022-05-15 21:29:08', '2022-05-15 21:28:49'),
+(10, 9, 1, 10000, 'win', 19, 100, 100, '2022-05-15 21:29:09', '2022-05-15 21:28:49'),
+(11, 9, 1, 10000, 'win', 20, 100, 100, '2022-05-15 21:29:10', '2022-05-15 21:28:49'),
+(12, 9, 1, 10000, 'win', 37, 100, 100, '2022-05-15 21:29:27', '2022-05-15 21:28:49'),
+(13, 9, 1, 10000, 'win', 38, 100, 100, '2022-05-15 21:29:28', '2022-05-15 21:28:49'),
+(14, 9, 1, 10000, 'win', 39, 100, 100, '2022-05-15 21:29:29', '2022-05-15 21:28:49'),
+(15, 9, 1, 10000, 'win', 39, 100, 100, '2022-05-15 21:29:29', '2022-05-15 21:28:49'),
+(16, 9, 1, 10000, 'win', 9, 100, 100, '2022-05-15 21:30:03', '2022-05-15 21:29:53'),
+(17, 9, 1, 10000, 'win', 11, 100, 100, '2022-05-15 21:31:11', '2022-05-15 21:31:00'),
+(18, 9, 1, 10000, 'win', 16, 100, 100, '2022-05-15 21:33:14', '2022-05-15 21:32:57');
 
 -- --------------------------------------------------------
 
@@ -144,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `mail` varchar(120) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `user`
@@ -167,7 +191,10 @@ INSERT INTO `user` (`id`, `pseudo`, `mail`, `created_at`) VALUES
 (32, 'dhfgsfdbw', 'omdousmane@ydahoo.comd', '2022-05-13 00:23:20'),
 (33, 'dhfgsfggg', 'omdousmane@yahodfgto.com', '2022-05-13 08:44:55'),
 (34, 'dddg', 'omdousmane@ycsdfgahoo.com', '2022-05-13 12:46:40'),
-(35, 'dhfgsfdbd', 'omdousmane@yahdxsfoo.com', '2022-05-13 15:46:47');
+(35, 'dhfgsfdbd', 'omdousmane@yahdxsfoo.com', '2022-05-13 15:46:47'),
+(36, 'dhfgsfdbddd', 'omdousmane@yadddddhoo.com', '2022-05-14 21:54:05'),
+(37, 'cccc', 'cccccc@ffffff@fff', '2022-05-15 02:19:07'),
+(38, 'ouss', 'ouss@gg.com', '2022-05-15 21:47:52');
 
 --
 -- Contraintes pour les tables déchargées

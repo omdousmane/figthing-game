@@ -4,11 +4,15 @@ kaboom({
   font: "sinko",
   background: [0, 0, 5, 0.2],
 });
+// Récupérer des données depuis sessionStorage
+var idUser = sessionStorage.getItem("idUser");
+console.log(idUser);
+
 var dataStat;
 var mapBg = "3.png";
 var timer = 0;
 var score;
-var idU = sessionStorage.idUser;
+var idU = idUser;
 const SPEED = 300;
 const JUMP_FORCE = 800;
 gravity(1550);
@@ -686,7 +690,7 @@ p.onUpdate(() => {
 enemy2.onUpdate(async () => {
   // p.color=rgb(rand(0, 255), rand(0, 255), rand(0, 255))
   if (adversaire.getvie() <= 0) {
-    console.log("YOU WIN");
+    // console.log("YOU WIN");
     vieEnemy.text = 0;
     /*On  envoie le resultat du combat avec la fonction endGame*/
     score = joueur.getvie() * 100;
@@ -823,7 +827,7 @@ function endGame(score, result, speed) {
     speed: speed,
     degats: 100,
     bossLive: 100,
-    gameEnd: 1,
+    gameEnd: date + " " + hours,
   };
 }
 // endGame()

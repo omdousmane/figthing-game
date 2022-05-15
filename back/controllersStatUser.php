@@ -41,7 +41,6 @@ function registerGameState($stat)
   return $id ?? false;
 }
 
-
 //recuperation des données en post
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
