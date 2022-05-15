@@ -186,7 +186,7 @@ const p = add([
 
 const sol = add([
     pos(0, 580),
-    rect(1550, 20),
+    rect(2550, 20),
     outline(0),
     area(),
     solid(),
@@ -220,16 +220,15 @@ const boxCollisionLeft = add([
     rect(35, 850),
     outline(0),
     area(),
-
     origin("center"),
     solid(),
+    "leftBox",
 ])
 const boxCollisionRight = add([
     pos(822, 220),
     rect(35, 850),
     outline(0),
     area(),
-
     origin("center"),
     solid(),
 ])
@@ -277,12 +276,15 @@ enemy2.play("idle")
 
 /*IA*/
 // this callback will run once when enters "attack" state
+// let ePosChanged = false
 enemy2.onStateEnter("attack", () => {
     const dir = p.pos.sub(enemy2.pos).unit();
     // enter "idle" state when the attack animation ends
     // ennemi attaque joueur venant de la gauche
     if (dir.x < 0) {
         enemy2.origin = "botright";
+        // enemy2.pos.x += 2.6*enemy2.area.width;
+        // ePosChanged = true;
         if (getRandomInt(1, 3) == 1) {
 
             kick.play()
@@ -328,10 +330,16 @@ enemy2.onStateEnter("idle", () => {
     if (enemy2.curAnim() !== "idle" && dir.x > 0) {
         kick.stop()
         enemy2.origin = "botleft";
+        // if (ePosChanged) {
+        //     enemy2.pos.x -= 2.6*enemy2.area.width
+        //     ePosChanged = false;
+        // }
         enemy2.use(sprite("persoIdle"));
         enemy2.play("idle");
     } else {
         enemy2.origin = "botright";
+        // enemy2.pos.x += 2.6*enemy2.area.width;
+        // ePosChanged = true;
         enemy2.use(sprite("persoIdle", { flipX: true }));
         enemy2.play("idle");
     }
@@ -347,6 +355,10 @@ enemy2.onStateUpdate("move", () => {
     if (p.isGrounded()) {
         enemy2.move(dir.scale(100));
         //console.log("is actually moving");
+        // if (ePosChanged) {
+        //     enemy2.pos.x -= 2.6*enemy2.area.width
+        //     ePosChanged = false;
+        // }
         if (dir.x < 0 && enemy2.curAnim() !== "runLeft") {
             enemy2.origin = "botleft";
             enemy2.use(sprite("persoRunLeft"));
@@ -365,8 +377,24 @@ enemy2.onStateUpdate("move", () => {
 
 })
 
+const startText = add([
+    text("PRESS ENTER TO START THE GAME", {
+        size: 28, // 48 pixels tall
+        width: 620, // it'll wrap to next line when width exceeds this value
+        font: "sink", // there're 4 built-in fonts: "apl386", "apl386o", "sink", and "sinko"
+    }),
+    pos(80, 300),
+    color(rgb(222, 92, 72)),
+])
+
+let allowDamage = false
 // appuie sur enter pour commencer le combat
-onKeyPress("enter", () => enemy2.enterState("idle"));
+// on peut prendre des dégat seulement après que le début du jeu soit confirmé
+onKeyPress("enter", () => {
+    destroy(startText);
+    enemy2.enterState("idle");
+    allowDamage = true;
+});
 
 
 /* FIN IA*/
@@ -379,29 +407,9 @@ function getRandomInt(min, max) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // PLAYER ATTACK TOUCH EVENT + ANIMATION
 let attackTurn = false;
 onKeyPress("a", () => {
-
-
     // .play() will reset to the first frame of the anim, so we want to make sure it only runs when the current animation is not "run"
     if (p.isGrounded() && !attackTurn) { 
         kick.play()
@@ -440,6 +448,7 @@ p.onAnimEnd("attack2Left", () => {
 
 
 
+
 /*COLLISION*/
 
 
@@ -449,7 +458,6 @@ const barreVie = add([
     outline(0),
     origin("left"),
     color(rgb(50, 166, 168))
-
 ])
 
 const barreVieEnnemy = add([
@@ -457,9 +465,7 @@ const barreVieEnnemy = add([
     rect(240, 50),
     outline(0),
     origin("left"),
-
     color(rgb(153, 57, 137)),
-
 ])
 
 const vie = add([
@@ -467,7 +473,6 @@ const vie = add([
         size: 28, // 48 pixels tall
         width: 320, // it'll wrap to next line when width exceeds this value
         font: "sink", // there're 4 built-in fonts: "apl386", "apl386o", "sink", and "sinko"
-
     }),
 
     pos(80, 86),
@@ -510,15 +515,27 @@ window.setInterval(() => {
 
 /* ***************/
 
-
-// p.onCollide("enemy", (enemy) => {
-//     if(isKeyDown("a") && !isKeyDown("right")){
-//         destroy(enemy)
-
-//         addDegat(enemy.pos,"100")
+// Bug origin qui fait sortir le boss du background
+// ne marche pas du tout
+// enemy2.onCollide("leftBox", () => {
+//     if(enemy2.pos.x > 780){
+//         enemy2.pos.x -= 200;
 //     }
-
 // })
+
+p.onCollide("enemy2", (enemy2) => {
+    if (allowDamage) {
+        console.log(p.curAnim());
+        if (p.curAnim() == "attack2" || p.curAnim() == "attack2Left" ) {
+            shake(2)
+
+            // enemy2.color=rgb(rand(0, 255), rand(0, 255), rand(0, 255))
+            takeDegat(enemy2.pos, "+10", rgb(153, 57, 137))
+            console.log(joueur.attack(adversaire))
+            vieEnemy.text = adversaire.getvie()
+        }
+    }
+})
 
 const total = 500;
 let solved = 1;
@@ -530,7 +547,7 @@ const ruleOfThree = (num1, num2) => {
 const updateBarLength = () => {
     const percentage = ruleOfThree(total, solved);
     barreVie.width = percentage;
-    //console.log(percentage)
+    console.log(percentage)
 };
 
 // function takeDegat(position, dammage) {
@@ -544,43 +561,42 @@ const updateBarLength = () => {
 
 // }
 
-
 function takeDegat(position, dammage, colors) {
 
-    const degat = add([
-        text("", {
-            size: 48, // 48 pixels tall
-            width: 320, // it'll wrap to next line when width exceeds this value
-            font: "sink", // there're 4 built-in fonts: "apl386", "apl386o", "sink", and "sinko"
-        }),
-        {
-            anim: "burst",
-        },
-        origin("center"),
-        scale(),
+        const degat = add([
+            text("", {
+                size: 48, // 48 pixels tall
+                width: 320, // it'll wrap to next line when width exceeds this value
+                font: "sink", // there're 4 built-in fonts: "apl386", "apl386o", "sink", and "sinko"
+            }),
+            {
+                anim: "burst",
+            },
+            origin("center"),
+            scale(),
 
-        color(colors),
-        pos(position),
-        {
-            value: 0
-        },
+            color(colors),
+            pos(position),
+            {
+                value: 0
+            },
 
-    ])
-    // perf - console.table(degat)
+        ])
+        // perf - console.table(degat)
 
-    degat.scale = 0.0085
-    degat.opacity = 1
-    degat.text = dammage
-    degat.onUpdate(() => {
-        degat.scale += 0.0085
-        degat.opacity -= 0.005
+        degat.scale = 0.0085
+        degat.opacity = 1
+        degat.text = dammage
+        degat.onUpdate(() => {
+            degat.scale += 0.0085
+            degat.opacity -= 0.005
 
-    })
-    setTimeout(() => {
+        })
+        setTimeout(() => {
 
 
-        destroy(degat)
-    }, 400)
+            destroy(degat)
+        }, 400)        
 
 }
 
@@ -589,31 +605,30 @@ function takeDegat(position, dammage, colors) {
 
 
 enemy2.onCollide("p", (p) => {
-
-
-    if (enemy2.curAnim() == "attack2Left" || enemy2.curAnim() == "attack2" ) {
-        takeDegat(p.pos, "-10", rgb(50, 166, 168))
-        //  perf - console.log(adversaire.attack(joueur))
-        vie.text = joueur.getvie()
-        // p.color=rgb(rand(0, 255), rand(0, 255), rand(0, 255))
-        shake(2)
+    if (allowDamage) {
+        if (enemy2.curAnim() == "attack2Left" || enemy2.curAnim() == "attack2" ) {
+            takeDegat(p.pos, "-10", rgb(50, 166, 168))
+            console.log(adversaire.attack(joueur))
+            vie.text = joueur.getvie()
+            // p.color=rgb(rand(0, 255), rand(0, 255), rand(0, 255))
+            shake(2)
+        }
     }
-
 })
 
 
 p.onCollide("enemy2", (enemy2) => {
+    if (allowDamage) {
+        console.log(p.curAnim());
+        if (p.curAnim() == "attack2" || p.curAnim() == "attack2Left" ) {
+            shake(2)
 
-    // perf - console.log(p.curAnim())
-    if (p.curAnim() == "attack2" || p.curAnim() == "attack2Left" ) {
-        shake(2)
-
-        // enemy2.color=rgb(rand(0, 255), rand(0, 255), rand(0, 255))
-        takeDegat(enemy2.pos, "+10", rgb(153, 57, 137))
-        // perf - console.log(joueur.attack(adversaire))
-        vieEnemy.text = adversaire.getvie()
+            // enemy2.color=rgb(rand(0, 255), rand(0, 255), rand(0, 255))
+            takeDegat(enemy2.pos, "+10", rgb(153, 57, 137))
+            console.log(joueur.attack(adversaire))
+            vieEnemy.text = adversaire.getvie()
+        }
     }
-
 })
 // p.onUpdate(() => { p.origin="center";  })
 
@@ -621,10 +636,10 @@ p.onCollide("enemy2", (enemy2) => {
 p.onUpdate(() => {
 
     if (joueur.getvie() <= 0) {
-        //console.log("GAME OVER")
+        console.log("GAME OVER")
         /*On  envoie le resultat du combat avec la fonction endGame*/
-        let score = joueur.getvie() * 100
-        endGame(score, 'lose', timer)
+        let score = joueur.getvie() * 100;
+        endGame(score, 'lose', timer);
            //document.querySelector(".progression-container").style.display="initial"
            document.querySelector(".progression-container").classList.add("slide-fwd-center")
            document.querySelector(".result-title").innerText="GAME OVER"
@@ -644,7 +659,7 @@ p.onUpdate(() => {
 enemy2.onUpdate(async () => {
     // p.color=rgb(rand(0, 255), rand(0, 255), rand(0, 255))
     if (adversaire.getvie() <= 0) {
-       // console.log("YOU WIN")
+        console.log("YOU WIN")
         vieEnemy.text = 0
         /*On  envoie le resultat du combat avec la fonction endGame*/
          score = joueur.getvie() * 100
@@ -679,7 +694,7 @@ enemy2.onUpdate(() => {
 
 
 
-
+// config touches pour le joueur
 onKeyDown("left", () => {
     attackTurn = true;
     // on peut pas bouger et attaquer en même temps
@@ -693,10 +708,12 @@ onKeyDown("left", () => {
         }
     }
 })
-
+let posChanged 
 onKeyRelease("left", () => {
     if (p.isGrounded()) {
         p.origin = "botright";
+        p.pos.x += 2.6*p.area.width;
+        posChanged = true;
         p.use(sprite("persoIdle", { flipX: true }));
         p.play("idle");
         p.onAnimEnd("idle", ()=> { p.flipX = false})
@@ -710,6 +727,10 @@ onKeyDown("right", () => {
         // .play() will reset to the first frame of the anim, so we want to make sure it only runs when the current animation is not "run"
         if (p.isGrounded() && p.curAnim() !== "run") {
             p.origin = "botleft";
+            if (posChanged) {
+                p.pos.x -= 2.6*p.area.width
+                posChanged = false;
+            }
             p.use(sprite("persoRun"))
             p.play("run")
         }
@@ -745,10 +766,29 @@ let persoPrincipale = new player(100, 10, 20)
 
 
 // tentative fix origin
-
-// async function fixOrigin(target) {
-//     if (target.origin === "botright")
+// function turnOrigin (target) {
+//     if (target.origin !== "botleft") {
+//         return true;
+//     } else {
+//         return false;
+//     }
 // }
+// async function fixOrigin(target) {
+//     console.log("hi")
+//     let answer = await turnOrigin();
+//     if (answer) {
+//         console.log("turn");
+//         return target.pos.x += target.area.width;
+//     }
+//     // if (target.origin == "botleft") {
+//     //     console.log("unturn");
+//     //     target.pos.x -= target.area.width;
+//     //     turn = false;
+//     // }
+// }
+
+// fixOrigin(p);
+
 
 
 /*Fonction pour terminer le jeu et recuperer le gagnant*/
