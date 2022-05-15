@@ -224,7 +224,10 @@ destroy(enemy)
 
 const enemy2 = add([
 	sprite("persoIdle", {flipX: true} ),
-    area({ width: 40, height: 52 }),
+    area({
+        width: 36,
+        height: 49.5
+    }),
 	pos(750, 32),
 	origin("botright"),
     scale(2.5),
@@ -270,6 +273,7 @@ enemy2.onStateEnter("attack", () => {
 
 // this will run once when enters "idle" state
 enemy2.onStateEnter("idle", () => {
+    enemy2.area.width = 36;
     const dir = p.pos.sub(enemy2.pos).unit();
     if (enemy2.curAnim() !== "idle" && dir.x > 0) {
         enemy2.origin = "botleft";
