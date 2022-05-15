@@ -1,27 +1,31 @@
 class player {
-  cursor;
-  constructor(health, attack1, attack2) {
-    this.health = health;
-    this.attack1 = attack1;
-    this.attack2 = attack2;
-  }
-  attack(player) {
-    player.setHealth(player.getHealth() - this.attack1);
-    console.log(player.health);
-  }
-  setHealth(health) {
-    this.health = health;
-  }
-  getHealth() {
-    return this.health;
-  }
+     cursor;
+    constructor(vie, degat) {
+        this.vie = vie;
+        this.degat = degat;
+       
+    }
+     attack(player){
+         player.setvie(Math.floor(player.getvie()-this.degat));
+         console.log(player.vie)
 
-  create(ethis) {}
+    }
+    setvie(vie){
+        this.vie=vie;
+    }
+    getvie(){
+        return this.vie;
+    }
+    getdegat(){
+        return this.degat;
+    }
 
-  update1() {}
+    
+    
 }
 
-var pr = new player(100, 20, 5);
-var pr2 = new player(100, 20, 5);
+/*Test*/
+// var pr=new player(100,50)
+// var pr2=new player(100,80)
 
-pr.attack(pr2);
+// pr.attack(pr2)

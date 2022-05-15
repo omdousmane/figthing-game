@@ -4,7 +4,7 @@
 $pdo = require 'database.php';
 
 // fonction de recuperation des données en base 
-function getGameState($idUser): array | false
+function getGameState($idUser)
 {
   global $pdo;
   $stmtGetGameState = $pdo->prepare('SELECT * FROM level LEFT JOIN maps ON level.IdMap = maps.id LEFT JOIN progress ON progress.id_map = maps.id LEFT JOIN user ON progress.id_user = user.id WHERE user.id =:idUser');
@@ -41,43 +41,43 @@ function registerGameState($stat)
   return $id ?? false;
 }
 
-// echo json_encode($_POST);
+echo json_encode($_POST);
 
 
 //recuperation des données en post
 
-// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//   $countTab = count($_POST);
-//   if ($countTab != 1) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $countTab = count($_POST);
+  if ($countTab != 1) {
 
-//     if (array_key_exists('idUser', $_POST) && array_key_exists('result', $_POST)) {
-//       $input = filter_input_array(INPUT_POST, [
-//         'idUser' => FILTER_SANITIZE_NUMBER_INT,
-//         'result' => FILTER_SANITIZE_SPECIAL_CHARS,
-//       ]);
-//       // creation du tableau de donnée 
-//       $stat = [
-//         'idUser' => $stat['idUser'],
-//         'idMap' => $stat['idMap'],
-//         'score' => $stat['score'],
-//         'result' => $stat['result'],
-//         'speed' => $stat['speed'],
-//         'degats' => $stat['degats'],
-//         'bossLive' => $stat['bossLive'],
-//         'gameEnd' => $stat['gameEnd']
-//       ];
+    if (array_key_exists('idUser', $_POST) && array_key_exists('result', $_POST)) {
+      $input = filter_input_array(INPUT_POST, [
+        'idUser' => FILTER_SANITIZE_NUMBER_INT,
+        'result' => FILTER_SANITIZE_SPECIAL_CHARS,
+      ]);
+      // creation du tableau de donnée 
+      $stat = [
+        'idUser' => $_POST['idUser'],
+        'idMap' => $_POST['idMap'],
+        'score' => $_POST['score'],
+        'result' => $_POST['result'],
+        'speed' => $_POST['speed'],
+        'degats' => $_POST['degats'],
+        'bossLive' => $_POST['bossLive'],
+        'gameEnd'=> $_POST['gameEnd']
+      ];
 
-//       $StatRegister = registerGameState($stat);
-//       if ($StatRegister === 0) {
-//         echo json_encode([
-//           'status' => 'problème d\'enregistrement'
-//         ]);
-//       } else {
-//         echo json_encode($StatRegister);
-//       }
-//     }
-//   }
-// }
+      $StatRegister = registerGameState($stat);
+      if ($StatRegister === 0) {
+        echo json_encode([
+          'status' => 'problème d\'enregistrement'
+        ]);
+      } else {
+        echo json_encode($StatRegister);
+      }
+    }
+  }
+}
 
 echo json_encode($_GET);
 
