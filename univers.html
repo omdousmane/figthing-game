@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/variable.css" />
+    <link rel="stylesheet" href="css/univers.css" />
+    <link rel="stylesheet" href="css/utilities.css" />
+    <link rel="stylesheet" href="css/keyframe.css" />
+    <link rel="stylesheet" href="css/help.css" />
+
+    <link rel="icon" type="image/png" href="/assets/flavicon.png" />
+
+    <!-- le script JS -->
+    <script defer src="js/univers.js"></script>
+    <script defer src="js/help.js"></script>
+    <title>univers</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <header>
+        <a href="index.html" class="logo">
+          <img loading="lazy" src="./assets/logos.svg" alt="logo" />
+        </a>
+
+        <!-- <a href="#modal" class="modal btn btn-sm"> Help </a> -->
+        <button id="myBtn" class="btn btn-sm">Help</button>
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+          <!-- Modal content -->
+          <div class="modal-content scale-in-center">
+            <img loading="lazy" src="/assets/icon/close.svg" class="close" alt="close"width="40px" />
+            <h1>HELP</h1>
+            <div class="modal-body">
+              <div class="attaque1">
+                <img loading="lazy" src="/assets/icon/a.svg" class="touch" alt=""width="40px" />
+                <div class="text">Attaque principale</div>
+              </div>
+              <div class="attaque2">
+                <img loading="lazy" src="/assets/icon/z.svg" class="touch" alt=""width="40px" />
+                <div class="text">Attaque Secondaire</div>
+              </div>
+              <div class="modal-footer customAnim">
+                <img loading="lazy" src="/assets/icon/direction.svg" alt=""width="250px" />
+              </div>
+            </div>
+          
+          </div>
+        </div>
+
+        <!-- <a href="score-board.html" class=" btn btn-sm"> Score </a> -->
+        <div class="slide-top menu">
+          <img loading="lazy" src="./assets/icon/usericon.svg" alt="" />
+          <ul class="sub-menu">
+            <li><a href="index.html" class="logout">Déconexion</a></li>
+          </ul>
+        </div>
+      </header>
+      <!-- <div class="alert-success welcom roll-in-right"></div> -->
+      <main class="roll-in-left">
+        <button class="map1 first">
+          <a href="levelDemo.html" class="lock"> </a>
+          <div class="map-name">Ville</div>
+        </button>
+        <button class="map2 map filter" disabled>
+          <a href="#" class="lock">
+            <img loading="lazy" src="./assets/icon/bxs_lock-open.svg" alt="" />
+          </a>
+          <div class="map-name">Prisson</div>
+        </button>
+        <button class="map3 map filter" disabled>
+          <a href="#" class="lock">
+            <img loading="lazy" src="./assets/icon/bxs_lock-open.svg" alt="" />
+          </a>
+          <div class="map-name">Desert</div>
+        </button>
+        <button class="map4 map filter" disabled>
+          <a href="#" class="lock">
+            <img loading="lazy" src="./assets/icon/bxs_lock-open.svg" alt="" />
+          </a>
+          <div class="map-name">Forêt</div>
+        </button>
+        <button class="map5 map filter" disabled>
+          <a href="#" class="lock">
+            <img loading="lazy" src="./assets/icon/bxs_lock-open.svg" alt="" />
+          </a>
+          <div class="map-name">Grotte</div>
+        </button>
+        <button class="map6 map filter" disabled>
+          <a href="levelSix.html" class="lock">
+            <img loading="lazy" src="./assets/icon/bxs_lock-open.svg" alt="" />
+          </a>
+          <div class="map-name">Hummm</div>
+        </button>
+      </main>
+    </div>
+  </body>
+</html>

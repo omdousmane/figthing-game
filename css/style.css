@@ -1,0 +1,44 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--popins);
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.logo img {
+  width: 432px;
+  height: 185px;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+/* register */
+.register {
+  width: 300px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  font-weight: 600;
+  text-transform: lowercase;
+}
+.register p {
+  color: var(--bg-white);
+}
+.register a {
+  text-decoration: none;
+  color: var(--bg-yellow);
+}
+
+.submit-btn {
+  display: none;
+}

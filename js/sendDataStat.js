@@ -1,0 +1,96 @@
+var getHttpRequest = function () {
+  var httpRequest = false;
+
+  if (window.XMLHttpRequest) {
+    // Mozilla, Safari,...
+    httpRequest = new XMLHttpRequest();
+    if (httpRequest.overrideMimeType) {
+      httpRequest.overrideMimeType("text/xml");
+    }
+  } else if (window.ActiveXObject) {
+    // IE
+    try {
+      httpRequest = new ActiveXObject("Msxml2.XMLHTTP");
+    } catch (e) {
+      try {
+        httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+      } catch (e) {}
+    }
+  }
+
+  if (!httpRequest) {
+    alert("Abandon :( Impossible de créer une instance XMLHTTP");
+    return false;
+  }
+  return httpRequest;
+};
+
+let d = new Date();
+var date = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+var hours = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+
+document.querySelector(".sendData").addEventListener("click", () => {
+  // console.log("diallo");
+  let data = new FormData();
+  data.append("idUser", dataStat.idUser);
+  data.append("idMap", dataStat.idMap);
+  data.append("score", dataStat.score);
+  data.append("result", dataStat.result);
+  data.append("speed", dataStat.speed);
+  data.append("degats", dataStat.degats);
+  data.append("bossLive", dataStat.bossLive);
+  data.append("gameEnd", dataStat.gameEnd);
+  let xhr = getHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      if (xhr.status != 200) {
+        let errors = JSON.parse(xhr.responseText);
+        console.log(errors);
+      } else {
+        let results = xhr.responseText;
+        console.log(results);
+        // traitement de la reponse de la requette ajax
+      }
+    }
+  };
+  xhr.open("POST", "./back/controllersStatUser.php", true);
+  xhr.setRequestHeader("X-Requested-With", "xmlhttprequest");
+  xhr.send(data);
+});
+
+// recupration des elements statistique du joueur
+function getStatGamer(idUser) {
+  let xhr = getHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        let results = JSON.parse(xhr.responseText);
+        console.log(results);
+
+        // traitement de la reponse de la requette ajax
+        results.map(function (content) {
+          if (content.result === "win") {
+            let newMap = Number(content.idMap) + Number(content.idMap);
+          
+          } else {
+          }
+        });
+      } else {
+        alert("impossible datteindre le server");
+      }
+    }
+  };
+  xhr.open("GET", "./back/controllersStatUser.php?idUser=" + idUser);
+  xhr.send();
+}
+document.querySelector(".sendData").addEventListener("click", () => {
+  getStatGamer(dataStat.idUser);
+  window.location = "./univers.html";
+});
+
+document
+.querySelector(".next-level")
+.addEventListener("click", () => {
+  window.location = "./leveltwo.html";
+  console.log(newMap);
+});

@@ -1,0 +1,117 @@
+.logo {
+  width: 216px;
+  height: 93px;
+}
+.logo img {
+  max-width: 100%;
+}
+header {
+  height: 125px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+main {
+  display: flex;
+  padding: 25px;
+  width: 80%;
+  height: calc(100vh - 30px);
+  justify-content: space-between;
+  align-items: center;
+  flex-flow: row wrap;
+  gap: 25px;
+  background-color: var(--card-primary-bg);
+  border-radius: var(--radius);
+}
+.map1 {
+  background-image: url(../assets/1.webp);
+}
+.map2 {
+  background-image: url(../assets/2.webp);
+}
+.map3 {
+  background-image: url(../assets/3.webp);
+}
+.map4 {
+  background-image: url(../assets/4.webp);
+}
+.map5 {
+  background-image: url(../assets/5.webp);
+}
+.map6 {
+  background-image: url(../assets/6.webp);
+}
+
+.map,
+.first {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-clip: padding-box;
+  object-fit: cover;
+  width: 30%;
+  height: 40%;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  position: relative;
+  transition: 1s all;
+}
+
+.map-name {
+  color: var(--bg-yellow);
+  font-size: 40px;
+  font-weight: bold;
+  text-transform: uppercase;
+  -webkit-animation: text-shadow-pop-tr 0.6s both;
+  animation: text-shadow-pop-tr 0.6s both;
+}
+.map:hover {
+  filter: drop-shadow(8px 8px 10px rgb(46, 44, 44)) blur(1px);
+}
+
+.map a {
+  right: 10px;
+  bottom: 0;
+  position: absolute;
+}
+.map a img {
+  filter: grayscale(0%);
+}
+
+.filter {
+  border: none;
+  border-radius: var(--radius);
+  filter: grayscale(90%);
+}
+.menu {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 10px;
+}
+.welcom {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  width: 350px;
+  height: 100px;
+  color: var(--card-primary-bg);
+  background-color: green;
+  z-index: 1;
+  border-radius: var(--radius);
+  font-weight: 800;
+  font-size: 24px;
+}
+.logout{
+  font-family: sans-serif;
+  font-size:15px;
+  transition : 0.2s
+}
+
+.logout:hover{
+ 
+  transition : 0.3s;
+  color: var(--card-primary-bg);
+  font-size:18px;
+
+}
