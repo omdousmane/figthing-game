@@ -34,7 +34,7 @@ canvas {
 
 #main {
     height: 100vh;
-
+position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;

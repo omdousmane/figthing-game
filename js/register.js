@@ -55,7 +55,7 @@ form.addEventListener("submit", function (e) {
       }
     }
   };
-  xhr.open("POST", "/back/controllers.php", true);
+  xhr.open("POST", "./back/controllers.php", true);
   xhr.setRequestHeader("X-Requested-With", "xmlhttprequest");
   xhr.send(data);
 });
@@ -101,7 +101,7 @@ pseudo.addEventListener("keyup", (e) => {
         }
       }
     };
-    xhr.open("GET", "/back/controllers.php?pseudo=" + pseudo.value, true);
+    xhr.open("GET", "./back/controllers.php?pseudo=" + pseudo.value, true);
     xhr.send();
   }
 });

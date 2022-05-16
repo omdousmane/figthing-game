@@ -74,7 +74,7 @@ pseudo.addEventListener("keyup", (e) => {
         }
       }
     };
-    xhr.open("GET", "/back/controllers.php?pseudoLogin=" + pseudo.value, true);
+    xhr.open("GET", "./back/controllers.php?pseudoLogin=" + pseudo.value, true);
     xhr.send();
   }
 });
